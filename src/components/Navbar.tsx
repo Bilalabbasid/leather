@@ -189,6 +189,19 @@ export default function Navbar() {
                   Accessories
                   {pathname.startsWith('/collection/wallets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
                 </Link>
+
+                {/* ACE — Ultra-Premium Bespoke / Made on Demand */}
+                <Link
+                  href="/ace"
+                  className={`relative py-1 whitespace-nowrap transition-colors duration-150 flex items-center space-x-1.5 ${pathname === '/ace' ? 'text-black font-bold' : 'text-neutral-900 hover:text-black font-bold'}`}
+                  title="ACE — Bespoke Made on Demand Atelier"
+                >
+                  <span className="tracking-[0.25em]">ACE</span>
+                  <span className="text-[8px] bg-neutral-900 text-[#C19A6B] px-1.5 py-0.5 uppercase tracking-widest font-mono font-medium border border-neutral-700">
+                    Bespoke
+                  </span>
+                  {pathname === '/ace' && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+                </Link>
               </nav>
             </div>
 
@@ -315,6 +328,21 @@ export default function Navbar() {
 
               <Link href="/collection/wallets-small-leather-goods" className="py-3.5 border-b border-[#F0F0F0] text-[#111111] hover:text-[#767676] transition-colors min-h-[44px] flex items-center">
                 Accessories
+              </Link>
+
+              {/* ACE Bespoke */}
+              <Link
+                href="/ace"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-3.5 border-b border-[#F0F0F0] text-black font-bold flex items-center justify-between min-h-[44px]"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="tracking-[0.25em]">ACE</span>
+                  <span className="text-[9px] bg-neutral-900 text-[#C19A6B] px-1.5 py-0.5 uppercase tracking-widest font-mono">
+                    Made on Demand
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Bespoke</span>
               </Link>
 
               <Link href="/collection/all" className="py-3.5 border-b border-[#F0F0F0] text-[#767676] hover:text-[#111111] transition-colors min-h-[44px] flex items-center text-[11px]">
