@@ -61,7 +61,7 @@ export default async function HomePage() {
     <div className="bg-white text-[#111111] overflow-hidden">
 
       {/* ── 1. Cinematic Editorial Hero ────────────────────────────────── */}
-      <section className="relative h-[72vh] sm:h-[80vh] min-h-[500px] max-h-[820px] w-full bg-black overflow-hidden flex items-end">
+      <section className="relative h-[72vh] sm:h-[82vh] min-h-[520px] max-h-[840px] w-full bg-black overflow-hidden flex items-end">
         <div className="absolute inset-0">
           <Image
             src="/images/hero/editorial_hero.jpg"
@@ -69,9 +69,11 @@ export default async function HomePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center scale-100 motion-safe:animate-slowZoom"
+            className="object-cover object-[70%_center] sm:object-center"
           />
-          <div className="absolute inset-0 bg-black/45" />
+          {/* Subtle directional gradient so text is readable while image stays crisp & sharp */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/15" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-20 w-full z-10">
