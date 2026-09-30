@@ -1,0 +1,229 @@
+// Prisma Schema for ACEMEN - High-Performance Luxury D2C Leather Goods Platform
+// Architecture: Direct-to-Consumer / Wholesale Dual-Mode Architecture
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -------------------------------------------------------------
+// Admin User & Authentication (Auth.js / Secure Admin Portal)
+// -------------------------------------------------------------
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  role         String    @default("ADMIN") // SUPER_ADMIN, ADMIN
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("admin_users")
+}
+
+// -------------------------------------------------------------
+// Catalog & Taxonomy Hierarchy
+// -------------------------------------------------------------
+model Category {
+  id              String    @id @default(cuid())
+  name            String    @unique
+  slug            String    @unique
+  description     String?
+  image           String?
+  displayPriority Int       @default(0)
+  isActive        Boolean   @default(true)
+  products        Product[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([displayPriority])
+  @@map("categories")
+}
+
+// -------------------------------------------------------------
+// Core Product Model with Luxury Editorial Attributes & Merchandising
+// -------------------------------------------------------------
+model Product {
+  id              String         @id @default(cuid())
+  title           String
+  slug            String         @unique
+  styleCode       String         @unique // Parent SKU / Style Code e.g. "ACM-JKT-001"
+  description     String         // Short editorial description
+  craftNotes      String?        // Bespoke craftsmanship, provenance & atelier construction
+  careDetails     String?        // Preservation & conditioning guidelines
+  leatherGrade    String?        // e.g. "Full-Grain Italian Calfskin (1.2mm)", "French Box Calf"
+  material        String         @default("Genuine Leather") // Primary outer material
+  colorFamily     String         @default("Black") // e.g. "Black", "Brown", "Burgundy", "Tan"
+  priceInPence    Int            // Integer pence (e.g. £1,850.00 = 185000)
+  currency        String         @default("GBP")
+  status          String         @default("ACTIVE") // DRAFT, ACTIVE, ARCHIVED
+
+  // Merchandising & Placement Controls
+  isTopSelling    Boolean        @default(false)
+  isNewArrival    Boolean        @default(false)
+  isFeaturedHero  Boolean        @default(false)
+  displayPriority Int            @default(0) // Higher ranks first
+
+  // SEO Fields
+  metaTitle       String?
+  metaDescription String?
+
+  categoryId      String
+  category        Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  images          ProductImage[]
+  variants        Variant[]
+  orderItems      OrderItem[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([categoryId])
+  @@index([status])
+  @@index([isFeaturedHero, displayPriority])
+  @@index([isTopSelling])
+  @@index([isNewArrival])
+  @@map("products")
+}
+
+// -------------------------------------------------------------
+// Product Imagery & Gallery
+// -------------------------------------------------------------
+model ProductImage {
+  id           String   @id @default(cuid())
+  url          String   // Optimized CDN or static asset URL
+  publicId     String?  // Storage public ID (e.g. Cloudinary/UploadThing)
+  altText      String?
+  width        Int?
+  height       Int?
+  position     Int      @default(0) // Ordering for desktop & mobile
+  isPrimary    Boolean  @default(false)
+
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([productId])
+  @@index([position])
+  @@map("product_images")
+}
+
+// -------------------------------------------------------------
+// Product Variants (Sizes & Colorways with Independent Stock)
+// -------------------------------------------------------------
+model Variant {
+  id                    String      @id @default(cuid())
+  sku                   String      @unique // Variant SKU e.g. "ACM-JKT-001-38R"
+  size                  String      // e.g. "UK 8", "UK 9", "38R", "40R", "One Size"
+  color                 String      // e.g. "Obsidian Black", "Chestnut Brown"
+  colorHex              String?     // e.g. "#111111", "#4A2E1B"
+  materialVariation     String?     // e.g. "Waxed Finish", "Nubuck Suede"
+  priceOverrideInPence  Int?        // Optional override in pence
+  stockQuantity         Int         @default(0)
+  isActive              Boolean     @default(true)
+  displayPriority       Int         @default(0)
+
+  productId             String
+  product               Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  orderItems            OrderItem[]
+
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  @@index([productId])
+  @@index([size])
+  @@index([color])
+  @@index([stockQuantity])
+  @@map("variants")
+}
+
+// -------------------------------------------------------------
+// Orders & Checkout Lifecycle
+// -------------------------------------------------------------
+model Order {
+  id                    String      @id @default(cuid())
+  orderNumber           String      @unique // e.g. "ACM-2026-8910"
+  stripeSessionId       String?     @unique
+  stripePaymentIntentId String?     @unique
+  customerEmail         String
+  customerName          String?
+  shippingAddress       String?     // Safely formatted JSON string of address
+  currency              String      @default("GBP")
+  subtotalInPence       Int
+  shippingInPence       Int         @default(0)
+  taxInPence            Int         @default(0)
+  discountInPence       Int         @default(0)
+  totalInPence          Int
+
+  // Lifecycle status: PENDING, PAID, DISPATCHED, CANCELLED, REFUNDED
+  status                String      @default("PENDING")
+
+  orderItems            OrderItem[]
+
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  @@index([orderNumber])
+  @@index([customerEmail])
+  @@index([status])
+  @@map("orders")
+}
+
+// -------------------------------------------------------------
+// Order Line Items (Immutable Historical Snapshot)
+// -------------------------------------------------------------
+model OrderItem {
+  id                String    @id @default(cuid())
+  orderId           String
+  order             Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId         String?
+  product           Product?  @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  variantId         String?
+  variant           Variant?  @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  // Immutable historical snapshots (Never depends on live catalog price changes)
+  title             String
+  sku               String
+  size              String
+  color             String
+  unitPriceInPence  Int
+  quantity          Int
+  lineTotalInPence  Int
+
+  createdAt         DateTime  @default(now())
+
+  @@index([orderId])
+  @@index([productId])
+  @@index([variantId])
+  @@map("order_items")
+}
+
+// -------------------------------------------------------------
+// Stripe Webhook Event Idempotency Ledger
+// -------------------------------------------------------------
+model StripeWebhookEvent {
+  id               String    @id @default(cuid())
+  stripeEventId    String    @unique
+  eventType        String
+  processingStatus String    @default("PENDING") // PENDING, PROCESSED, FAILED
+  errorDetails     String?
+  createdAt        DateTime  @default(now())
+  processedAt      DateTime?
+
+  @@index([stripeEventId])
+  @@index([processingStatus])
+  @@map("stripe_webhook_events")
+}
