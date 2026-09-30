@@ -106,10 +106,10 @@ export default function Navbar() {
       {/* Main Navbar */}
       <header className={`sticky top-0 z-50 w-full bg-white transition-all duration-200 border-b border-neutral-200 ${isScrolled ? 'shadow-md py-0' : 'shadow-sm'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 items-center h-16 sm:h-20 w-full">
+          <div className="flex items-center justify-between h-16 sm:h-20 w-full gap-4">
 
-            {/* Col 1: Left nav */}
-            <div className="flex items-center justify-start min-w-0">
+            {/* Left: Nav Links */}
+            <div className="flex items-center justify-start">
               {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -121,8 +121,8 @@ export default function Navbar() {
               </button>
 
               {/* Desktop nav */}
-              <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-[11px] xl:text-[12px] font-semibold tracking-[0.2em] uppercase">
-                {/* Jackets — simple link */}
+              <nav className="hidden lg:flex items-center space-x-4 lg:space-x-5 xl:space-x-7 text-[11px] xl:text-[12px] font-semibold tracking-[0.16em] uppercase">
+                {/* Jackets */}
                 <Link
                   href="/collection/leather-jackets"
                   className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/leather-jackets') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
@@ -131,17 +131,17 @@ export default function Navbar() {
                   {pathname.startsWith('/collection/leather-jackets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
                 </Link>
 
-                {/* Footwear — mega-menu trigger */}
+                {/* Footwear */}
                 <div
                   className="relative"
                   onMouseEnter={() => openMega('shoes')}
                   onMouseLeave={closeMega}
                 >
                   <button
-                    className={`flex items-center space-x-1.5 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/shoes') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+                    className={`flex items-center space-x-1 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/shoes') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
                   >
                     <span>Footwear</span>
-                    <ChevronDown size={12} className={`transition-transform duration-200 ${megaMenu.open === 'shoes' ? 'rotate-180' : ''}`} />
+                    <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'shoes' ? 'rotate-180' : ''}`} />
                   </button>
                   {pathname.startsWith('/collection/shoes') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
 
@@ -156,17 +156,17 @@ export default function Navbar() {
                   )}
                 </div>
 
-                {/* Luggage — mega-menu trigger */}
+                {/* Luggage */}
                 <div
                   className="relative"
                   onMouseEnter={() => openMega('bags')}
                   onMouseLeave={closeMega}
                 >
                   <button
-                    className={`flex items-center space-x-1.5 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/bags') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+                    className={`flex items-center space-x-1 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/bags') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
                   >
                     <span>Luggage</span>
-                    <ChevronDown size={12} className={`transition-transform duration-200 ${megaMenu.open === 'bags' ? 'rotate-180' : ''}`} />
+                    <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'bags' ? 'rotate-180' : ''}`} />
                   </button>
                   {pathname.startsWith('/collection/bags') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
 
@@ -181,7 +181,7 @@ export default function Navbar() {
                   )}
                 </div>
 
-                {/* Accessories — simple link */}
+                {/* Accessories */}
                 <Link
                   href="/collection/wallets-small-leather-goods"
                   className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/wallets') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
@@ -190,23 +190,20 @@ export default function Navbar() {
                   {pathname.startsWith('/collection/wallets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
                 </Link>
 
-                {/* ACE — Ultra-Premium Bespoke / Made on Demand */}
+                {/* ACE — Bespoke / Made on Demand */}
                 <Link
                   href="/ace"
-                  className={`relative py-1 whitespace-nowrap transition-colors duration-150 flex items-center space-x-1.5 ${pathname === '/ace' ? 'text-black font-bold' : 'text-neutral-900 hover:text-black font-bold'}`}
-                  title="ACE — Bespoke Made on Demand Atelier"
+                  className={`relative py-1 whitespace-nowrap transition-colors duration-150 tracking-[0.2em] font-bold ${pathname === '/ace' ? 'text-[#8B5A2B]' : 'text-[#8B5A2B] hover:text-black'}`}
+                  title="ACE — Bespoke Atelier"
                 >
-                  <span className="tracking-[0.25em]">ACE</span>
-                  <span className="text-[8px] bg-neutral-900 text-[#C19A6B] px-1.5 py-0.5 uppercase tracking-widest font-mono font-medium border border-neutral-700">
-                    Bespoke
-                  </span>
-                  {pathname === '/ace' && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+                  ACE
+                  {pathname === '/ace' && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8B5A2B]" />}
                 </Link>
               </nav>
             </div>
 
-            {/* Col 2: Logo */}
-            <div className="flex items-center justify-center text-center px-2">
+            {/* Center: Protected Logo */}
+            <div className="flex-shrink-0 text-center px-4">
               <Link href="/" className="inline-block group py-1" aria-label="ACEMEN Home">
                 <span className="font-serif text-2xl sm:text-3xl tracking-[0.28em] font-light uppercase text-[#111111] group-hover:opacity-85 transition-opacity block leading-none">
                   ACEMEN
@@ -217,8 +214,8 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Col 3: Right actions */}
-            <div className="flex items-center justify-end space-x-1.5 sm:space-x-4">
+            {/* Right: Currency + Search + Cart */}
+            <div className="flex items-center justify-end space-x-1.5 sm:space-x-4 flex-shrink-0">
               {/* Currency */}
               <div className="hidden sm:flex items-center space-x-1 text-[11px] font-medium tracking-wider text-neutral-600 mr-1">
                 {(['GBP', 'USD', 'EUR'] as Currency[]).map((curr) => (
@@ -334,15 +331,10 @@ export default function Navbar() {
               <Link
                 href="/ace"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-3.5 border-b border-[#F0F0F0] text-black font-bold flex items-center justify-between min-h-[44px]"
+                className="py-3.5 border-b border-[#F0F0F0] text-[#8B5A2B] font-bold flex items-center justify-between min-h-[44px]"
               >
-                <div className="flex items-center space-x-2">
-                  <span className="tracking-[0.25em]">ACE</span>
-                  <span className="text-[9px] bg-neutral-900 text-[#C19A6B] px-1.5 py-0.5 uppercase tracking-widest font-mono">
-                    Made on Demand
-                  </span>
-                </div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Bespoke</span>
+                <span className="tracking-[0.25em]">ACE</span>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Made on Demand</span>
               </Link>
 
               <Link href="/collection/all" className="py-3.5 border-b border-[#F0F0F0] text-[#767676] hover:text-[#111111] transition-colors min-h-[44px] flex items-center text-[11px]">
