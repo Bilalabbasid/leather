@@ -69,7 +69,7 @@ export default async function HomePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[70%_center] sm:object-center"
+            className="object-cover object-[78%_top] sm:object-top"
           />
           {/* Subtle directional gradient so text is readable while image stays crisp & sharp */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent" />
