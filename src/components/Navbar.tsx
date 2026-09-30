@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Search, Menu, X, ShieldCheck, ChevronDown, TrendingUp, Sparkles } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ChevronDown, TrendingUp, Sparkles } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { Currency } from '@/lib/types';
 
@@ -223,11 +223,6 @@ export default function Navbar() {
                 <Search size={19} strokeWidth={1.8} />
               </button>
 
-              <Link href="/admin" className="hidden xl:flex items-center text-[10px] font-semibold tracking-widest uppercase text-neutral-800 hover:text-black transition-colors border border-neutral-300 px-3 py-1.5 hover:border-black rounded-none" title="Atelier CMS">
-                <ShieldCheck size={13} className="mr-1.5" />
-                <span>Admin</span>
-              </Link>
-
               <button onClick={openCart} className="relative text-[#111111] hover:text-neutral-600 transition-colors p-2 min-w-[40px] min-h-[40px] flex items-center justify-center" aria-label={`Shopping bag (${cartCount} items)`}>
                 <ShoppingBag size={20} strokeWidth={1.8} />
                 {cartCount > 0 && (
@@ -341,11 +336,6 @@ export default function Navbar() {
                   ))}
                 </div>
               </div>
-
-              <Link href="/admin" className="pt-3 text-[11px] text-[#767676] hover:text-[#111111] flex items-center min-h-[44px]">
-                <ShieldCheck size={14} className="mr-2" />
-                <span>Atelier Staff CMS</span>
-              </Link>
             </nav>
           </div>
         )}
