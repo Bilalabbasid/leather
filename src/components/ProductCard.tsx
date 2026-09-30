@@ -103,24 +103,47 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           <div className="space-y-2">
             {/* Quick Size Select */}
             {activeVariants.length > 1 && (
-              <div className="flex items-center justify-center space-x-1 overflow-x-auto py-0.5">
-                {activeVariants.map((v) => (
-                  <button
-                    key={v.id}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setSelectedVariant(v);
-                    }}
-                    className={`text-[9px] px-2 py-0.5 border font-mono transition-colors ${
-                      selectedVariant?.id === v.id
-                        ? 'border-[#111111] bg-[#111111] text-white'
-                        : 'border-[#E5E5E5] text-[#767676] hover:border-neutral-400 bg-white'
-                    }`}
-                  >
-                    {v.size.split('/')[0].trim()}
-                  </button>
-                ))}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[8px] font-mono uppercase tracking-wider text-[#767676] px-0.5">
+                  <span>Size:</span>
+                  <span className="font-medium text-[#111111] truncate max-w-[190px]">
+                    {selectedVariant?.size}
+                  </span>
+                </div>
+                <div className="flex items-center justify-center space-x-1 overflow-x-auto py-0.5 scrollbar-none">
+                  {activeVariants.map((v) => {
+                    // Extract clean pill label
+                    let pillLabel = v.size.split('/')[0].trim();
+                    if (v.size.includes('XXL')) pillLabel = 'XXL';
+                    else if (v.size.includes('Extra Large') || v.size.includes('XL')) pillLabel = 'XL';
+                    else if (v.size.includes('Large')) pillLabel = 'L';
+                    else if (v.size.includes('Medium')) pillLabel = 'M';
+                    else if (v.size.includes('Small')) pillLabel = 'S';
+                    else {
+                      const uk = v.size.match(/UK\s*(\d+)/i);
+                      if (uk) pillLabel = `UK ${uk[1]}`;
+                    }
+
+                    return (
+                      <button
+                        key={v.id}
+                        title={v.size}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setSelectedVariant(v);
+                        }}
+                        className={`text-[9px] px-2 py-0.5 border font-mono transition-colors whitespace-nowrap ${
+                          selectedVariant?.id === v.id
+                            ? 'border-[#111111] bg-[#111111] text-white'
+                            : 'border-[#E5E5E5] text-[#767676] hover:border-neutral-400 bg-white'
+                        }`}
+                      >
+                        {pillLabel}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
 

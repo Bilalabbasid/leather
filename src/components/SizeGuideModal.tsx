@@ -9,7 +9,7 @@ export default function SizeGuideModal() {
   const [tab, setTab] = useState<'jackets' | 'shoes'>('jackets');
 
   React.useEffect(() => {
-    if (sizeGuideCategory === 'cat-shoes' || sizeGuideCategory === 'shoes' || sizeGuideCategory === 'footwear') {
+    if (sizeGuideCategory && (sizeGuideCategory.includes('shoes') || sizeGuideCategory.includes('boot') || sizeGuideCategory === 'footwear')) {
       setTab('shoes');
     } else {
       setTab('jackets');
@@ -52,7 +52,7 @@ export default function SizeGuideModal() {
                 : 'text-[#767676] hover:text-[#111111]'
             }`}
           >
-            Outerwear Sizing
+            Outerwear Sizing (S – XXL)
           </button>
           <button
             onClick={() => setTab('shoes')}
@@ -62,7 +62,7 @@ export default function SizeGuideModal() {
                 : 'text-[#767676] hover:text-[#111111]'
             }`}
           >
-            Footwear & Boots Sizing
+            Footwear & Boots (UK · US · EU)
           </button>
         </div>
 
@@ -102,11 +102,18 @@ export default function SizeGuideModal() {
                   <td className="py-2.5 px-3 border border-[#E5E5E5]">67.0 cm</td>
                 </tr>
                 <tr>
-                  <td className="py-2.5 px-3 font-medium text-[#111111] border border-[#E5E5E5]">44R (XL)</td>
+                  <td className="py-2.5 px-3 font-medium text-[#111111] border border-[#E5E5E5]">44R (Extra Large / XL)</td>
                   <td className="py-2.5 px-3 border border-[#E5E5E5]">45&quot; - 47&quot;</td>
                   <td className="py-2.5 px-3 border border-[#E5E5E5]">60.0 cm</td>
                   <td className="py-2.5 px-3 border border-[#E5E5E5]">49.5 cm</td>
                   <td className="py-2.5 px-3 border border-[#E5E5E5]">68.0 cm</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-medium text-[#111111] border border-[#E5E5E5]">46R (XXL)</td>
+                  <td className="py-2.5 px-3 border border-[#E5E5E5]">48&quot; - 50&quot;</td>
+                  <td className="py-2.5 px-3 border border-[#E5E5E5]">62.5 cm</td>
+                  <td className="py-2.5 px-3 border border-[#E5E5E5]">51.0 cm</td>
+                  <td className="py-2.5 px-3 border border-[#E5E5E5]">69.0 cm</td>
                 </tr>
               </tbody>
             </table>
