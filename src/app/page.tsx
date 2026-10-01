@@ -251,6 +251,37 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* ── 5.5 Top Selling & Iconic Allocations ─────────────────────────── */}
+      {topSelling.length > 0 && (
+        <section className="border-t border-[#E5E5E5] py-14 sm:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 border-b border-[#E5E5E5] pb-4 sm:pb-5">
+              <div>
+                <span className="flex items-center space-x-2 text-[10px] tracking-[0.25em] uppercase font-mono text-[#767676] mb-1.5">
+                  <TrendingUp size={11} />
+                  <span>Most Coveted Allocations</span>
+                </span>
+                <h2 className="font-serif text-2xl sm:text-4xl font-light tracking-wide uppercase text-[#111111]">
+                  Top Selling Pieces
+                </h2>
+              </div>
+              <Link
+                href="/collection/top-selling"
+                className="mt-3 sm:mt-0 text-xs uppercase tracking-[0.2em] text-[#111111] hover:text-[#767676] transition-colors flex items-center space-x-1.5 font-medium group min-h-[36px]"
+              >
+                <span>View All Top Selling</span>
+                <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+              {topSelling.map((product, idx) => (
+                <ProductCard key={product.id} product={product} priority={idx === 0} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── 6. Shop by Category Tile Grid ───────────────────────────────── */}
       <section className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 sm:mb-10 border-b border-[#E5E5E5] pb-4 sm:pb-5">

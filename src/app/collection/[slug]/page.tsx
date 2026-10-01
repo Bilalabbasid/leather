@@ -88,6 +88,20 @@ function CollectionPageContent({ params }: PLPProps) {
     : isBagParent || isBagSubcat ? BAG_TABS
     : null;
 
+  const [dbCategory, setDbCategory] = useState<{ name: string; description?: string | null } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/categories')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.categories) {
+          const found = data.categories.find((c: any) => c.slug === slug);
+          if (found) setDbCategory(found);
+        }
+      })
+      .catch(() => {});
+  }, [slug]);
+
   // Fetch products from database API or fallback
   useEffect(() => {
     async function loadCatalog() {
@@ -95,7 +109,7 @@ function CollectionPageContent({ params }: PLPProps) {
         const queryParams = new URLSearchParams();
         if (virtualMeta) {
           queryParams.set(virtualMeta.apiParam, virtualMeta.apiValue);
-        } else if (slug !== 'all' && category) {
+        } else if (slug !== 'all') {
           queryParams.set('category', slug);
         }
         if (selectedColor !== 'ALL') queryParams.set('color', selectedColor);
@@ -104,7 +118,7 @@ function CollectionPageContent({ params }: PLPProps) {
         const res = await fetch(`/api/products?${queryParams.toString()}`);
         if (res.ok) {
           const data = await res.json();
-          if (data.products && data.products.length > 0) {
+          if (Array.isArray(data.products)) {
             setProducts(data.products);
             setLoading(false);
             return;
@@ -130,7 +144,7 @@ function CollectionPageContent({ params }: PLPProps) {
           setProducts(INITIAL_PRODUCTS.filter((p) => p.categoryId === category.id));
         }
       } else {
-        setProducts(INITIAL_PRODUCTS);
+        setProducts([]);
       }
       setLoading(false);
     }
@@ -233,14 +247,18 @@ function CollectionPageContent({ params }: PLPProps) {
     ? virtualMeta.title
     : category
       ? category.name
-      : slug === 'all'
-        ? 'All Collections'
-        : slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      : dbCategory
+        ? dbCategory.name
+        : slug === 'all'
+          ? 'All Collections'
+          : slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
   const categoryDesc = virtualMeta
     ? virtualMeta.desc
-    : category
+    : category?.description
       ? category.description
-      : 'Curated masterworks of British and Italian leather craftsmanship.';
+      : dbCategory?.description
+        ? dbCategory.description
+        : 'Curated masterworks of British and Italian leather craftsmanship.';
 
   // Breadcrumb parent for subcategories
   const parentCrumb = isShoeSubcat
@@ -504,17 +522,30 @@ function CollectionPageContent({ params }: PLPProps) {
         {filteredProducts.length === 0 ? (
           <div className="text-center py-24 border border-dashed border-[#E5E5E5] p-8 max-w-lg mx-auto">
             <h3 className="font-serif text-2xl font-light text-[#111111] mb-2">
-              No Pieces Match Your Current Refinement
+              {products.length === 0
+                ? `No Allocations in ${categoryTitle} Yet`
+                : 'No Pieces Match Your Current Refinement'}
             </h3>
-            <p className="text-xs text-[#767676] mb-6">
-              Try adjusting your leather type, size, or price parameters to view available atelier allocations.
+            <p className="text-xs text-[#767676] mb-6 leading-relaxed max-w-md mx-auto">
+              {products.length === 0
+                ? 'Handcrafted allocations for this collection are currently in tailoring at our London atelier. Explore our other permanent collections in the meantime.'
+                : 'Try adjusting your leather type, size, or price parameters to view available atelier allocations.'}
             </p>
-            <button
-              onClick={clearAllFilters}
-              className="px-6 py-2.5 bg-[#111111] text-white text-xs uppercase tracking-widest hover:bg-black transition-colors"
-            >
-              Reset All Filters
-            </button>
+            {products.length === 0 ? (
+              <Link
+                href="/collection/all"
+                className="inline-block px-6 py-2.5 bg-[#111111] text-white text-xs uppercase tracking-widest hover:bg-black transition-colors"
+              >
+                Explore All Collections
+              </Link>
+            ) : (
+              <button
+                onClick={clearAllFilters}
+                className="px-6 py-2.5 bg-[#111111] text-white text-xs uppercase tracking-widest hover:bg-black transition-colors"
+              >
+                Reset All Filters
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-6 lg:gap-8">

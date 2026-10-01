@@ -55,7 +55,8 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
   const [styleCode, setStyleCode] = useState('');
   const [categoryId, setCategoryId] = useState('cat-jackets');
   const [priceInPence, setPriceInPence] = useState<number>(185000);
-  const [status, setStatus] = useState<'ACTIVE' | 'DRAFT' | 'ARCHIVED'>('ACTIVE');
+  const [pricePounds, setPricePounds] = useState('1850.00');
+  const [status, setStatus] = useState<'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK'>('ACTIVE');
   const [material, setMaterial] = useState('Italian Full-Grain Calfskin');
   const [leatherGrade, setLeatherGrade] = useState('');
   const [colorFamily, setColorFamily] = useState('Black');
@@ -65,6 +66,9 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
   const [sizeChartImage, setSizeChartImage] = useState('');
   const [uploadingSizeChart, setUploadingSizeChart] = useState(false);
   const sizeChartInputRef = useRef<HTMLInputElement>(null);
+  const replaceFileInputRef = useRef<HTMLInputElement>(null);
+  const [replacingIndex, setReplacingIndex] = useState<number | null>(null);
+  const [newImageUrl, setNewImageUrl] = useState('');
   const [isFeaturedHero, setIsFeaturedHero] = useState(false);
   const [isTopSelling, setIsTopSelling] = useState(false);
   const [isNewArrival, setIsNewArrival] = useState(false);
@@ -103,7 +107,8 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
         setStyleCode(p.styleCode);
         setCategoryId(p.categoryId);
         setPriceInPence(p.priceInPence);
-        setStatus(p.status);
+        setPricePounds((p.priceInPence / 100).toFixed(2));
+        setStatus(p.status as 'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK');
         setMaterial(p.material);
         setLeatherGrade(p.leatherGrade || '');
         setColorFamily(p.colorFamily);
@@ -223,6 +228,59 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
     const updated = images.filter((_, i) => i !== idx);
     if (updated.length > 0 && !updated.some((img) => img.isPrimary)) updated[0].isPrimary = true;
     setImages(updated);
+  };
+
+  // Add image by URL
+  const handleAddImageUrl = () => {
+    if (!newImageUrl.trim()) return;
+    setImages((prev) => [
+      ...prev,
+      {
+        id: `img-${Date.now()}`,
+        url: newImageUrl.trim(),
+        altText: `${title} view`,
+        position: prev.length,
+        isPrimary: prev.length === 0,
+      },
+    ]);
+    setNewImageUrl('');
+    showToast('Image added to gallery from URL.');
+  };
+
+  // Replace existing image in-place
+  const replaceImageFile = async (idx: number, file: File) => {
+    try {
+      showToast(`Uploading replacement image for position #${idx + 1}...`);
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/admin/media/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setImages((prev) =>
+          prev.map((img, i) => (i === idx ? { ...img, url: data.url, publicId: data.publicId } : img))
+        );
+        showToast(`Image #${idx + 1} updated.`);
+      } else {
+        showToast(data.error || 'Failed to replace image.');
+      }
+    } catch {
+      showToast('Network error replacing image.');
+    } finally {
+      setReplacingIndex(null);
+    }
+  };
+
+  // Stock quick actions
+  const markAllOutOfStock = () => {
+    setVariants((prev) => prev.map((v) => ({ ...v, stockQuantity: 0 })));
+    setStatus('OUT_OF_STOCK');
+    showToast('All variants set to 0 stock & product marked Out of Stock.');
+  };
+
+  const restockAll = () => {
+    setVariants((prev) => prev.map((v) => ({ ...v, stockQuantity: Math.max(v.stockQuantity, 8) })));
+    if (status === 'OUT_OF_STOCK') setStatus('ACTIVE');
+    showToast('All variants restocked to at least 8 units & marked Active.');
   };
 
   // Variant controls
@@ -480,25 +538,41 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[#767676] pointer-events-none">£</span>
-                  <input type="number" step="0.01" min="0" required
-                    value={(priceInPence / 100).toFixed(2)}
-                    onChange={(e) => setPriceInPence(Math.round(parseFloat(e.target.value || '0') * 100))}
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    required
+                    value={pricePounds}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setPricePounds(val);
+                      const num = parseFloat(val);
+                      if (!isNaN(num) && num >= 0) {
+                        setPriceInPence(Math.round(num * 100));
+                      }
+                    }}
+                    placeholder="1850.00"
                     className="w-full pl-7 pr-3 py-2.5 border border-[#E5E5E5] text-sm font-mono text-[#111111] focus:outline-none focus:border-[#111111] transition-colors"
                   />
                 </div>
-                <p className="text-[10px] font-mono text-neutral-400 mt-1">{priceInPence}p integer</p>
+                <p className="text-[10px] font-mono text-neutral-400 mt-1">
+                  £{(priceInPence / 100).toLocaleString('en-GB', { minimumFractionDigits: 2 })} ({priceInPence}p)
+                </p>
               </div>
 
               <div>
                 <label className="block text-[10px] uppercase tracking-widest font-mono text-[#767676] mb-1.5">
-                  Status
+                  Catalog Status
                 </label>
-                <select value={status} onChange={(e) => setStatus(e.target.value as 'ACTIVE' | 'DRAFT' | 'ARCHIVED')}
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as 'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK')}
                   className="w-full px-3 py-2.5 border border-[#E5E5E5] text-sm text-[#111111] bg-white focus:outline-none focus:border-[#111111] transition-colors"
                 >
-                  <option value="ACTIVE">ACTIVE — Live</option>
+                  <option value="ACTIVE">ACTIVE — Live in Storefront</option>
+                  <option value="OUT_OF_STOCK">OUT OF STOCK — Marked Sold Out</option>
                   <option value="DRAFT">DRAFT — Hidden</option>
-                  <option value="ARCHIVED">ARCHIVED</option>
+                  <option value="ARCHIVED">ARCHIVED — Inactive</option>
                 </select>
               </div>
             </div>

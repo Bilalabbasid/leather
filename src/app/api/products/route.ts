@@ -18,7 +18,7 @@ const productCreateSchema = z.object({
   material: z.string().default('Genuine Leather'),
   colorFamily: z.string().default('Black'),
   priceInPence: z.number().int().positive('Price must be greater than 0 pence'),
-  status: z.enum(['DRAFT', 'ACTIVE', 'ARCHIVED']).default('ACTIVE'),
+  status: z.enum(['DRAFT', 'ACTIVE', 'ARCHIVED', 'OUT_OF_STOCK']).default('ACTIVE'),
   isTopSelling: z.boolean().default(false),
   isNewArrival: z.boolean().default(false),
   isFeaturedHero: z.boolean().default(false),

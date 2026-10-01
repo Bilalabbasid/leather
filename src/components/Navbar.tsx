@@ -41,7 +41,7 @@ const SIMPLE_NAV = [
 ];
 
 interface MegaMenuState {
-  open: 'shoes' | 'bags' | null;
+  open: 'shoes' | 'bags' | 'more' | null;
 }
 
 export default function Navbar() {
@@ -52,7 +52,8 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [megaMenu, setMegaMenu] = useState<MegaMenuState>({ open: null });
-  const [mobileExpanded, setMobileExpanded] = useState<'shoes' | 'bags' | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<'shoes' | 'bags' | 'more' | null>(null);
+  const [dbCategories, setDbCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -75,11 +76,47 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    fetch('/api/categories')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.categories) {
+          const knownSlugs = [
+            'leather-jackets',
+            'shoes',
+            'bags',
+            'wallets-small-leather-goods',
+            'shoes-oxford',
+            'shoes-chelsea',
+            'shoes-derby',
+            'shoes-loafer',
+            'shoes-monk',
+            'shoes-boots',
+            'bags-laptop',
+            'bags-handbag',
+            'bags-weekender',
+            'bags-backpack',
+            'bags-messenger',
+          ];
+          const custom = data.categories.filter(
+            (c: any) => c.isActive && !knownSlugs.includes(c.slug)
+          );
+          setDbCategories(custom);
+        }
+      })
+      .catch(() => {});
+  }, [pathname]);
+
+  useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [mobileMenuOpen]);
 
-  const openMega = (which: 'shoes' | 'bags') => {
+  // Completely hide storefront Navbar on admin routes to prevent double-header
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
+  const openMega = (which: 'shoes' | 'bags' | 'more') => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setMegaMenu({ open: which });
   };
@@ -105,11 +142,11 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <header className={`sticky top-0 z-50 w-full bg-white transition-all duration-200 border-b border-neutral-200 ${isScrolled ? 'shadow-md py-0' : 'shadow-sm'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20 w-full gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="flex items-center justify-between h-16 sm:h-20 w-full">
 
-            {/* Left: Nav Links */}
-            <div className="flex items-center justify-start">
+            {/* Left: Nav Links with Overflow Protection */}
+            <div className="flex items-center justify-start max-w-[42%] xl:max-w-[45%]">
               {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -121,7 +158,7 @@ export default function Navbar() {
               </button>
 
               {/* Desktop nav */}
-              <nav className="hidden lg:flex items-center space-x-4 lg:space-x-5 xl:space-x-7 text-[11px] xl:text-[12px] font-semibold tracking-[0.16em] uppercase">
+              <nav className="hidden lg:flex items-center space-x-3.5 xl:space-x-5 text-[11px] xl:text-[12px] font-semibold tracking-[0.15em] uppercase whitespace-nowrap">
                 {/* Jackets */}
                 <Link
                   href="/collection/leather-jackets"
@@ -149,7 +186,7 @@ export default function Navbar() {
                     <div
                       onMouseEnter={cancelClose}
                       onMouseLeave={closeMega}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
+                      className="absolute top-full left-0 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
                     >
                       <MegaPanel menu={SHOE_MENU} pathname={pathname} />
                     </div>
@@ -174,7 +211,7 @@ export default function Navbar() {
                     <div
                       onMouseEnter={cancelClose}
                       onMouseLeave={closeMega}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
+                      className="absolute top-full left-0 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
                     >
                       <MegaPanel menu={BAG_MENU} pathname={pathname} />
                     </div>
@@ -190,7 +227,52 @@ export default function Navbar() {
                   {pathname.startsWith('/collection/wallets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
                 </Link>
 
-                {/* ACE — Bespoke / Made on Demand */}
+                {/* Dynamically added custom categories (first 1-2 directly, rest in dropdown) */}
+                {dbCategories.slice(0, 1).map((cat) => (
+                  <Link
+                    key={cat.slug}
+                    href={`/collection/${cat.slug}`}
+                    className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith(`/collection/${cat.slug}`) ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+                  >
+                    {cat.name}
+                    {pathname.startsWith(`/collection/${cat.slug}`) && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+                  </Link>
+                ))}
+
+                {/* Overflow dropdown if multiple custom categories exist */}
+                {dbCategories.length > 1 && (
+                  <div
+                    className="relative"
+                    onMouseEnter={() => openMega('more')}
+                    onMouseLeave={closeMega}
+                  >
+                    <button
+                      className="flex items-center space-x-1 py-1 whitespace-nowrap text-neutral-700 hover:text-black transition-colors"
+                    >
+                      <span>More</span>
+                      <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'more' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {megaMenu.open === 'more' && (
+                      <div
+                        onMouseEnter={cancelClose}
+                        onMouseLeave={closeMega}
+                        className="absolute top-full left-0 mt-2 w-52 bg-white border border-neutral-200 shadow-2xl py-2 z-50 animate-fadeIn"
+                      >
+                        {dbCategories.slice(1).map((cat) => (
+                          <Link
+                            key={cat.slug}
+                            href={`/collection/${cat.slug}`}
+                            className="block px-4 py-2 text-xs font-mono tracking-wider uppercase text-neutral-700 hover:bg-neutral-50 hover:text-black transition-colors"
+                          >
+                            {cat.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* ACE — Bespoke */}
                 <Link
                   href="/ace"
                   className={`relative py-1 whitespace-nowrap transition-colors duration-150 tracking-[0.2em] font-bold ${pathname === '/ace' ? 'text-[#8B5A2B]' : 'text-[#8B5A2B] hover:text-black'}`}
@@ -202,9 +284,9 @@ export default function Navbar() {
               </nav>
             </div>
 
-            {/* Center: Protected Logo */}
-            <div className="flex-shrink-0 text-center px-4">
-              <Link href="/" className="inline-block group py-1" aria-label="ACEMEN Home">
+            {/* Center: Absolutely Centered Protected Brand Logo */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-center z-10">
+              <Link href="/" className="pointer-events-auto inline-block group py-1" aria-label="ACEMEN Home">
                 <span className="font-serif text-2xl sm:text-3xl tracking-[0.28em] font-light uppercase text-[#111111] group-hover:opacity-85 transition-opacity block leading-none">
                   ACEMEN
                 </span>
@@ -215,7 +297,7 @@ export default function Navbar() {
             </div>
 
             {/* Right: Currency + Search + Cart */}
-            <div className="flex items-center justify-end space-x-1.5 sm:space-x-4 flex-shrink-0">
+            <div className="flex items-center justify-end space-x-1.5 sm:space-x-4 flex-shrink-0 z-20">
               {/* Currency */}
               <div className="hidden sm:flex items-center space-x-1 text-[11px] font-medium tracking-wider text-neutral-600 mr-1">
                 {(['GBP', 'USD', 'EUR'] as Currency[]).map((curr) => (
@@ -326,6 +408,18 @@ export default function Navbar() {
               <Link href="/collection/wallets-small-leather-goods" className="py-3.5 border-b border-[#F0F0F0] text-[#111111] hover:text-[#767676] transition-colors min-h-[44px] flex items-center">
                 Accessories
               </Link>
+
+              {/* Dynamic Categories in Mobile Menu */}
+              {dbCategories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/collection/${cat.slug}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-3.5 border-b border-[#F0F0F0] text-[#111111] hover:text-[#767676] transition-colors min-h-[44px] flex items-center"
+                >
+                  {cat.name}
+                </Link>
+              ))}
 
               {/* ACE Bespoke */}
               <Link

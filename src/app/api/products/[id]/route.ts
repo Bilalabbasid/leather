@@ -18,7 +18,7 @@ const productUpdateSchema = z.object({
   material: z.string().optional(),
   colorFamily: z.string().optional(),
   priceInPence: z.number().int().positive().optional(),
-  status: z.enum(['DRAFT', 'ACTIVE', 'ARCHIVED']).optional(),
+  status: z.enum(['DRAFT', 'ACTIVE', 'ARCHIVED', 'OUT_OF_STOCK']).optional(),
   isTopSelling: z.boolean().optional(),
   isNewArrival: z.boolean().optional(),
   isFeaturedHero: z.boolean().optional(),
