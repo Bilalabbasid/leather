@@ -390,30 +390,27 @@ export default function ProductDetailPage({ params }: PDPProps) {
               </p>
 
               {/* Variant / Size Selection */}
-              <div className="space-y-4 pt-3 border-t border-[#E5E5E5]">
-                {/* Header row with scale toggle & size guide button */}
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center space-x-2">
-                    <span className="uppercase tracking-widest font-mono text-[10px] text-[#767676]">
-                      {isFootwear
-                        ? 'Footwear Sizing:'
-                        : isJacket
-                        ? 'Outerwear Sizing:'
-                        : 'Select Size & Allocation:'}
+              <div className="space-y-3 pt-3 border-t border-[#E5E5E5]">
+                {/* Header row: SIZE + Scale selector (for shoes) + Size Guide */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <span className="font-sans text-xs uppercase tracking-widest font-semibold text-[#111111]">
+                      SIZE
                     </span>
 
                     {/* Shoe Scale Switcher: UK / US / EU */}
                     {isFootwear && (
-                      <div className="inline-flex items-center p-0.5 bg-neutral-100 border border-[#E5E5E5] text-[10px] font-mono">
+                      <div className="inline-flex items-center space-x-1.5 text-[11px] font-mono border-l border-[#E5E5E5] pl-3">
+                        <span className="text-[#888888] text-[10px] uppercase">Scale:</span>
                         {(['UK', 'US', 'EU'] as const).map((scale) => (
                           <button
                             key={scale}
                             type="button"
                             onClick={() => setShoeScale(scale)}
-                            className={`px-2.5 py-0.5 transition-colors ${
+                            className={`px-1.5 py-0.5 transition-colors text-[10px] tracking-wider uppercase font-semibold ${
                               shoeScale === scale
-                                ? 'bg-[#111111] text-white font-medium'
-                                : 'text-[#767676] hover:text-[#111111]'
+                                ? 'text-[#111111] underline underline-offset-4 decoration-2'
+                                : 'text-[#888888] hover:text-[#111111]'
                             }`}
                           >
                             {scale}
@@ -421,62 +418,36 @@ export default function ProductDetailPage({ params }: PDPProps) {
                         ))}
                       </div>
                     )}
-
-                    {/* Jacket Scale Switcher: Letter (S–XXL) vs Chest (38R–46R) */}
-                    {isJacket && (
-                      <div className="inline-flex items-center p-0.5 bg-neutral-100 border border-[#E5E5E5] text-[10px] font-mono">
-                        <button
-                          type="button"
-                          onClick={() => setJacketScale('letter')}
-                          className={`px-2 py-0.5 transition-colors ${
-                            jacketScale === 'letter'
-                              ? 'bg-[#111111] text-white font-medium'
-                              : 'text-[#767676] hover:text-[#111111]'
-                          }`}
-                        >
-                          Letter (S–XXL)
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setJacketScale('chest')}
-                          className={`px-2 py-0.5 transition-colors ${
-                            jacketScale === 'chest'
-                              ? 'bg-[#111111] text-white font-medium'
-                              : 'text-[#767676] hover:text-[#111111]'
-                          }`}
-                        >
-                          Chest (38R–46R)
-                        </button>
-                      </div>
-                    )}
                   </div>
 
                   <button
                     onClick={() => openSizeGuide(product.categoryId)}
-                    className="text-[10px] uppercase tracking-wider text-[#111111] hover:text-[#767676] flex items-center space-x-1 underline min-h-[32px]"
+                    className="text-[10px] uppercase tracking-wider text-[#767676] hover:text-[#111111] flex items-center space-x-1 underline min-h-[32px]"
                   >
                     <Ruler size={11} />
                     <span>Size Guide</span>
                   </button>
                 </div>
 
-                {/* Sizing Grid */}
-                <div className="grid grid-cols-2 gap-2.5">
+                {/* Horizontal Rounded Pills (Matching exact reference design) */}
+                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                   {product.variants.map((v) => {
                     const isSelected = selectedVariant?.id === v.id;
                     const isOutOfStock = v.stockQuantity <= 0;
 
-                    let primaryLabel = v.size;
-                    let secondarySubtitle = '';
+                    let pillText = v.size;
 
-                    if (isFootwear) {
-                      const display = getShoeDisplay(v.size, shoeScale);
-                      primaryLabel = display.primary;
-                      secondarySubtitle = display.secondary;
-                    } else if (isJacket) {
-                      const display = getJacketDisplay(v.size, jacketScale);
-                      primaryLabel = display.primary;
-                      secondarySubtitle = display.secondary;
+                    if (isJacket) {
+                      if (v.size.includes('Small')) pillText = 'SMALL';
+                      else if (v.size.includes('Medium')) pillText = 'MEDIUM';
+                      else if (v.size.includes('Extra Large') || v.size.includes('XL')) pillText = 'XL';
+                      else if (v.size.includes('XXL')) pillText = 'XXL';
+                      else if (v.size.includes('Large')) pillText = 'LARGE';
+                    } else if (isFootwear) {
+                      const { uk, us, eu } = parseShoeSize(v.size);
+                      if (shoeScale === 'UK') pillText = `UK ${uk}`;
+                      else if (shoeScale === 'US') pillText = `US ${us}`;
+                      else if (shoeScale === 'EU') pillText = `EU ${eu}`;
                     }
 
                     return (
@@ -484,62 +455,37 @@ export default function ProductDetailPage({ params }: PDPProps) {
                         key={v.id}
                         disabled={!v.isActive || isOutOfStock}
                         onClick={() => setSelectedVariant(v)}
-                        className={`p-3 text-left border text-xs transition-colors flex flex-col justify-between min-h-[58px] ${
+                        className={`min-w-[76px] sm:min-w-[88px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs uppercase tracking-wider font-sans transition-all text-center border ${
                           isSelected
-                            ? 'border-[#111111] bg-[#111111] text-white'
+                            ? 'bg-[#111111] text-white border-[#111111] shadow-xs'
                             : isOutOfStock
-                            ? 'border-neutral-200 bg-neutral-50 text-neutral-400 cursor-not-allowed'
-                            : 'border-[#E5E5E5] text-[#111111] hover:border-neutral-400 bg-white'
+                            ? 'bg-neutral-50 text-neutral-300 border-neutral-200 cursor-not-allowed line-through'
+                            : 'bg-white text-[#111111] border-neutral-300 hover:border-black'
                         }`}
                       >
-                        <div className="flex justify-between items-start w-full">
-                          <div>
-                            <span className="font-medium text-xs block leading-tight">{primaryLabel}</span>
-                            {secondarySubtitle && (
-                              <span
-                                className={`text-[10px] font-mono block mt-0.5 ${
-                                  isSelected ? 'text-neutral-300' : 'text-[#767676]'
-                                }`}
-                              >
-                                {secondarySubtitle}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check size={12} className="flex-shrink-0 mt-0.5" />}
-                        </div>
-                        <span
-                          className={`text-[9px] font-mono uppercase tracking-wider mt-2 ${
-                            isSelected ? 'text-neutral-300' : 'text-[#767676]'
-                          }`}
-                        >
-                          {isOutOfStock
-                            ? 'Allocation Exhausted'
-                            : `${v.stockQuantity} in atelier`}
-                        </span>
+                        {pillText}
                       </button>
                     );
                   })}
                 </div>
 
-                {/* Explicit Selection Confirmation Banner */}
+                {/* Selected Sizing Specification Hint */}
                 {selectedVariant && (
-                  <div className="py-2.5 px-3.5 bg-neutral-50 border border-[#E5E5E5] flex items-center justify-between text-xs">
-                    <div className="space-y-0.5">
-                      <span className="text-[9px] uppercase font-mono tracking-widest text-[#767676] block">
-                        Selected Size Specification
-                      </span>
-                      <p className="font-medium text-[#111111] text-xs">
-                        {isFootwear
-                          ? `${getShoeDisplay(selectedVariant.size, 'UK').all} — British F-Width Fitting`
-                          : isJacket
-                          ? getJacketDisplay(selectedVariant.size, 'letter').summary
-                          : selectedVariant.size}
-                      </p>
-                    </div>
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5">
-                      {selectedVariant.stockQuantity > 0 ? 'In Stock' : 'Sold Out'}
-                    </span>
-                  </div>
+                  <p className="text-[11px] font-mono text-[#767676] pt-0.5">
+                    {isFootwear ? (
+                      <>
+                        Selected: <span className="text-[#111111] font-medium">{getShoeDisplay(selectedVariant.size, 'UK').all}</span> · Standard F-Width British Fitting
+                      </>
+                    ) : isJacket ? (
+                      <>
+                        Selected: <span className="text-[#111111] font-medium">{getJacketDisplay(selectedVariant.size, 'letter').summary}</span>
+                      </>
+                    ) : (
+                      <>
+                        Selected: <span className="text-[#111111] font-medium">{selectedVariant.size}</span>
+                      </>
+                    )}
+                  </p>
                 )}
 
                 {/* Add to Shopping Bag Action */}

@@ -116,9 +116,9 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                     let pillLabel = v.size.split('/')[0].trim();
                     if (v.size.includes('XXL')) pillLabel = 'XXL';
                     else if (v.size.includes('Extra Large') || v.size.includes('XL')) pillLabel = 'XL';
-                    else if (v.size.includes('Large')) pillLabel = 'L';
-                    else if (v.size.includes('Medium')) pillLabel = 'M';
-                    else if (v.size.includes('Small')) pillLabel = 'S';
+                    else if (v.size.includes('Large')) pillLabel = 'LARGE';
+                    else if (v.size.includes('Medium')) pillLabel = 'MEDIUM';
+                    else if (v.size.includes('Small')) pillLabel = 'SMALL';
                     else {
                       const uk = v.size.match(/UK\s*(\d+)/i);
                       if (uk) pillLabel = `UK ${uk[1]}`;
@@ -133,10 +133,10 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                           e.stopPropagation();
                           setSelectedVariant(v);
                         }}
-                        className={`text-[9px] px-2 py-0.5 border font-mono transition-colors whitespace-nowrap ${
+                        className={`text-[8px] sm:text-[9px] px-2.5 py-1 rounded-md border font-sans tracking-wider uppercase transition-colors whitespace-nowrap ${
                           selectedVariant?.id === v.id
-                            ? 'border-[#111111] bg-[#111111] text-white'
-                            : 'border-[#E5E5E5] text-[#767676] hover:border-neutral-400 bg-white'
+                            ? 'border-[#111111] bg-[#111111] text-white shadow-xs'
+                            : 'border-neutral-300 text-[#111111] hover:border-black bg-white'
                         }`}
                       >
                         {pillLabel}
