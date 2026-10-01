@@ -43,6 +43,7 @@ export async function POST() {
             description: p.description,
             craftNotes: p.craftNotes,
             careDetails: p.careDetails,
+            sizeChartImage: p.sizeChartImage ?? null,
             leatherGrade: p.leatherGrade,
             material: p.material,
             colorFamily: p.colorFamily,
@@ -74,6 +75,11 @@ export async function POST() {
               })),
             },
           },
+        });
+      } else if (p.sizeChartImage) {
+        await prisma.product.update({
+          where: { id: existingProduct.id },
+          data: { sizeChartImage: p.sizeChartImage },
         });
       }
     }

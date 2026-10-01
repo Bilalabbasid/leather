@@ -53,6 +53,7 @@ export interface Product {
   description: string;
   craftNotes?: string | null;
   careDetails?: string | null;
+  sizeChartImage?: string | null;
   leatherGrade?: string | null;
   material: string;
   colorFamily: string;

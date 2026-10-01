@@ -58,6 +58,9 @@ export default function NewProductPage() {
   const [description, setDescription] = useState('');
   const [craftNotes, setCraftNotes] = useState('');
   const [careDetails, setCareDetails] = useState('');
+  const [sizeChartImage, setSizeChartImage] = useState('');
+  const [uploadingSizeChart, setUploadingSizeChart] = useState(false);
+  const sizeChartInputRef = useRef<HTMLInputElement>(null);
 
   // Merchandising
   const [isFeaturedHero, setIsFeaturedHero] = useState(false);
@@ -225,6 +228,30 @@ export default function NewProductPage() {
 
   const removeVariant = (idx: number) => setVariants(variants.filter((_, i) => i !== idx));
 
+  // Size chart upload handler
+  const handleSizeChartUpload = async (file: File) => {
+    try {
+      setUploadingSizeChart(true);
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/admin/media/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setSizeChartImage(data.url);
+        showToast('Size chart diagram uploaded successfully.');
+      } else {
+        showToast(data.error || 'Failed to upload size chart.');
+      }
+    } catch (err: any) {
+      showToast('Error uploading size chart.');
+    } finally {
+      setUploadingSizeChart(false);
+    }
+  };
+
   // Submit
   const handleSubmit = async (e: React.FormEvent, saveStatus: 'ACTIVE' | 'DRAFT' | 'ARCHIVED' = 'ACTIVE') => {
     e.preventDefault();
@@ -250,6 +277,7 @@ export default function NewProductPage() {
       description: description.trim(),
       craftNotes: craftNotes.trim() || null,
       careDetails: careDetails.trim() || null,
+      sizeChartImage: sizeChartImage.trim() || null,
       isFeaturedHero,
       isTopSelling,
       isNewArrival,
@@ -524,6 +552,70 @@ export default function NewProductPage() {
               <textarea rows={2} value={careDetails} onChange={(e) => setCareDetails(e.target.value)}
                 placeholder="Condition annually with beeswax balm. Store away from direct sunlight…"
                 className="w-full px-3 py-2.5 border border-[#E5E5E5] text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors resize-none"
+              />
+            </div>
+
+            {/* Size Chart Image Upload (For Product Description & Sizing Guide) */}
+            <div className="pt-3 border-t border-[#E5E5E5] space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="block text-[10px] uppercase tracking-widest font-mono text-[#767676]">
+                  Size Chart Diagram / Image (Shown in Product Description)
+                </label>
+                {sizeChartImage && (
+                  <button
+                    type="button"
+                    onClick={() => setSizeChartImage('')}
+                    className="text-[10px] uppercase font-mono tracking-widest text-rose-600 hover:text-rose-800 transition-colors"
+                  >
+                    Remove Chart
+                  </button>
+                )}
+              </div>
+
+              {sizeChartImage ? (
+                <div className="relative border border-[#E5E5E5] p-3 bg-neutral-50 rounded-sm space-y-2">
+                  <div className="relative max-h-48 w-full overflow-hidden bg-white border border-[#E5E5E5] flex items-center justify-center p-2">
+                    <img
+                      src={sizeChartImage}
+                      alt="Size Chart Preview"
+                      className="max-h-44 object-contain"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] font-mono text-[#767676]">
+                    <span className="truncate max-w-sm">{sizeChartImage}</span>
+                    <button
+                      type="button"
+                      onClick={() => sizeChartInputRef.current?.click()}
+                      className="text-[#111111] underline hover:text-[#767676]"
+                    >
+                      Replace Chart
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => sizeChartInputRef.current?.click()}
+                  className="border-2 border-dashed border-[#E5E5E5] hover:border-[#111111] p-5 text-center cursor-pointer transition-colors bg-neutral-50/50 hover:bg-neutral-50 rounded-sm"
+                >
+                  <Upload size={20} className="mx-auto mb-2 text-[#767676]" />
+                  <p className="text-xs text-[#111111] font-medium">
+                    {uploadingSizeChart ? 'Uploading Size Chart Diagram...' : 'Upload Size Chart Image'}
+                  </p>
+                  <p className="text-[10px] text-[#767676] font-mono mt-1">
+                    Upload measurement table image (JPEG, PNG, WEBP, or SVG) to embed directly in Product Description
+                  </p>
+                </div>
+              )}
+
+              <input
+                ref={sizeChartInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleSizeChartUpload(file);
+                }}
               />
             </div>
           </div>

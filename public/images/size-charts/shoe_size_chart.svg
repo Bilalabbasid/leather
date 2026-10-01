@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" width="100%" height="100%">
+  <defs>
+    <style>
+      .header-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 15px; font-weight: 700; fill: #FFFFFF; letter-spacing: 2px; }
+      .col-header { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 700; fill: #C85A17; letter-spacing: 1px; }
+      .row-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 700; fill: #111111; }
+      .cell-val { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 400; fill: #333333; text-anchor: middle; }
+      .grid-line { stroke: #E5E5E5; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="700" height="280" fill="#FFFFFF" rx="6" />
+  <rect width="698" height="278" x="1" y="1" fill="none" stroke="#E5E5E5" stroke-width="1" rx="6" />
+
+  <!-- Top Black Bar Title -->
+  <rect x="0" y="0" width="700" height="48" fill="#111111" rx="6" />
+  <rect x="0" y="40" width="700" height="8" fill="#111111" />
+  <text x="350" y="30" text-anchor="middle" class="header-title">ACEMEN GOODYEAR-WELTED FOOTWEAR SIZE CHART</text>
+
+  <!-- Column Header Row Background -->
+  <rect x="0" y="48" width="700" height="38" fill="#FBFBFB" />
+  <line x1="0" y1="86" x2="700" y2="86" class="grid-line" stroke-width="1.5" />
+
+  <!-- Column Headers -->
+  <text x="75" y="72" class="row-label">STANDARD</text>
+  <text x="210" y="72" text-anchor="middle" class="col-header">UK 7</text>
+  <text x="305" y="72" text-anchor="middle" class="col-header">UK 8</text>
+  <text x="400" y="72" text-anchor="middle" class="col-header">UK 9</text>
+  <text x="495" y="72" text-anchor="middle" class="col-header">UK 10</text>
+  <text x="590" y="72" text-anchor="middle" class="col-header">UK 11</text>
+
+  <!-- Vertical Divider Lines -->
+  <line x1="150" y1="48" x2="150" y2="270" class="grid-line" />
+  <line x1="250" y1="48" x2="250" y2="270" class="grid-line" />
+  <line x1="345" y1="48" x2="345" y2="270" class="grid-line" />
+  <line x1="440" y1="48" x2="440" y2="270" class="grid-line" />
+  <line x1="535" y1="48" x2="535" y2="270" class="grid-line" />
+  <line x1="640" y1="48" x2="640" y2="270" class="grid-line" />
+
+  <!-- Row 1: US Sizing -->
+  <rect x="0" y="86" width="700" height="36" fill="#FFFFFF" />
+  <text x="20" y="108" class="row-label">US Men Equivalent</text>
+  <text x="210" y="108" class="cell-val">US 8</text>
+  <text x="305" y="108" class="cell-val">US 9</text>
+  <text x="400" y="108" class="cell-val">US 10</text>
+  <text x="495" y="108" class="cell-val">US 11</text>
+  <text x="590" y="108" class="cell-val">US 12</text>
+  <line x1="0" y1="122" x2="700" y2="122" class="grid-line" />
+
+  <!-- Row 2: EU Sizing -->
+  <rect x="0" y="122" width="700" height="36" fill="#FAFAFA" />
+  <text x="20" y="145" class="row-label">EU Sizing</text>
+  <text x="210" y="145" class="cell-val">EU 41</text>
+  <text x="305" y="145" class="cell-val">EU 42</text>
+  <text x="400" y="145" class="cell-val">EU 43</text>
+  <text x="495" y="145" class="cell-val">EU 44</text>
+  <text x="590" y="145" class="cell-val">EU 45</text>
+  <line x1="0" y1="158" x2="700" y2="158" class="grid-line" />
+
+  <!-- Row 3: Foot Length -->
+  <rect x="0" y="158" width="700" height="36" fill="#FFFFFF" />
+  <text x="20" y="181" class="row-label">Foot Length (mm)</text>
+  <text x="210" y="181" class="cell-val">258 mm</text>
+  <text x="305" y="181" class="cell-val">266 mm</text>
+  <text x="400" y="181" class="cell-val">275 mm</text>
+  <text x="495" y="181" class="cell-val">283 mm</text>
+  <text x="590" y="181" class="cell-val">292 mm</text>
+  <line x1="0" y1="194" x2="700" y2="194" class="grid-line" />
+
+  <!-- Row 4: Width Fitting -->
+  <rect x="0" y="194" width="700" height="36" fill="#FAFAFA" />
+  <text x="20" y="217" class="row-label">Width Fitting</text>
+  <text x="210" y="217" class="cell-val">F (Standard)</text>
+  <text x="305" y="217" class="cell-val">F (Standard)</text>
+  <text x="400" y="217" class="cell-val">F (Standard)</text>
+  <text x="495" y="217" class="cell-val">F (Standard)</text>
+  <text x="590" y="217" class="cell-val">F (Standard)</text>
+  <line x1="0" y1="230" x2="700" y2="230" class="grid-line" />
+
+  <!-- Row 5: Insole Length -->
+  <rect x="0" y="230" width="700" height="36" fill="#FFFFFF" />
+  <text x="20" y="253" class="row-label">Insole Length (mm)</text>
+  <text x="210" y="253" class="cell-val">268 mm</text>
+  <text x="305" y="253" class="cell-val">276 mm</text>
+  <text x="400" y="253" class="cell-val">285 mm</text>
+  <text x="495" y="253" class="cell-val">293 mm</text>
+  <text x="590" y="253" class="cell-val">302 mm</text>
+  <line x1="0" y1="266" x2="700" y2="266" class="grid-line" />
+</svg>

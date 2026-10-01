@@ -59,6 +59,7 @@ model Product {
   description     String         // Short editorial description
   craftNotes      String?        // Bespoke craftsmanship, provenance & atelier construction
   careDetails     String?        // Preservation & conditioning guidelines
+  sizeChartImage  String?        // Uploaded size chart diagram or measurement matrix image
   leatherGrade    String?        // e.g. "Full-Grain Italian Calfskin (1.2mm)", "French Box Calf"
   material        String         @default("Genuine Leather") // Primary outer material
   colorFamily     String         @default("Black") // e.g. "Black", "Brown", "Burgundy", "Tan"

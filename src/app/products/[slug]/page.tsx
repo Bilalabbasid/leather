@@ -143,7 +143,7 @@ export default function ProductDetailPage({ params }: PDPProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
-  const [openSection, setOpenSection] = useState<'craft' | 'care' | 'delivery' | null>('craft');
+  const [openSection, setOpenSection] = useState<'desc' | 'craft' | 'care' | 'delivery' | null>('desc');
   const [showStickyBar, setShowStickyBar] = useState(false);
   const addToBagRef = useRef<HTMLButtonElement>(null);
 
@@ -159,7 +159,7 @@ export default function ProductDetailPage({ params }: PDPProps) {
     return () => observer.disconnect();
   }, []);
 
-  const toggleSection = (section: 'craft' | 'care' | 'delivery') => {
+  const toggleSection = (section: 'desc' | 'craft' | 'care' | 'delivery') => {
     setOpenSection(openSection === section ? null : section);
   };
 
@@ -513,6 +513,43 @@ export default function ProductDetailPage({ params }: PDPProps) {
 
               {/* Expandable Accordions: Craft Notes, Care, Delivery */}
               <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5] pt-2">
+                {/* Product Description with Embedded Size Chart Image */}
+                <div>
+                  <button
+                    onClick={() => toggleSection('desc')}
+                    className="w-full py-3.5 flex items-center justify-between text-left text-xs uppercase tracking-wider font-medium text-[#111111]"
+                  >
+                    <span>Product Description</span>
+                    {openSection === 'desc' ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  </button>
+                  {openSection === 'desc' && (
+                    <div className="pb-5 space-y-4">
+                      <p className="text-xs text-[#767676] font-sans leading-relaxed tracking-wide">
+                        {product.description}
+                      </p>
+
+                      {/* Uploaded Size Chart Image */}
+                      {product.sizeChartImage && (
+                        <div className="mt-4 space-y-2 pt-3 border-t border-[#E5E5E5]">
+                          <div className="flex items-center justify-between text-[10px] uppercase font-mono tracking-widest text-[#767676]">
+                            <span>Size & Measurement Matrix</span>
+                            <span className="text-[#111111] font-sans">Official Atelier Specifications</span>
+                          </div>
+                          <div className="relative w-full overflow-hidden border border-[#E5E5E5] bg-white rounded-md shadow-xs">
+                            <Image
+                              src={product.sizeChartImage}
+                              alt={`${product.title} Size Chart`}
+                              width={700}
+                              height={340}
+                              className="w-full h-auto object-contain"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 {/* Craftsmanship Notes */}
                 {product.craftNotes && (
                   <div>
