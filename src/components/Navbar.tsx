@@ -142,12 +142,11 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <header className={`sticky top-0 z-50 w-full bg-white transition-all duration-200 border-b border-neutral-200 ${isScrolled ? 'shadow-md py-0' : 'shadow-sm'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="flex items-center justify-between h-16 sm:h-20 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20 w-full gap-4">
 
-            {/* Left: Nav Links with Overflow Protection */}
-            <div className="flex items-center justify-start max-w-[42%] xl:max-w-[45%]">
-              {/* Mobile hamburger */}
+            {/* Left: Mobile Hamburger & Official Brand Lockup */}
+            <div className="flex items-center gap-3 sm:gap-4 shrink-0">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden text-[#111111] hover:text-neutral-600 transition-colors p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -157,147 +156,151 @@ export default function Navbar() {
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
 
-              {/* Desktop nav */}
-              <nav className="hidden lg:flex items-center space-x-3.5 xl:space-x-5 text-[11px] xl:text-[12px] font-semibold tracking-[0.15em] uppercase whitespace-nowrap">
-                {/* Jackets */}
-                <Link
-                  href="/collection/leather-jackets"
-                  className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/leather-jackets') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
-                >
-                  Jackets
-                  {pathname.startsWith('/collection/leather-jackets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
-                </Link>
-
-                {/* Footwear */}
-                <div
-                  className="relative"
-                  onMouseEnter={() => openMega('shoes')}
-                  onMouseLeave={closeMega}
-                >
-                  <button
-                    className={`flex items-center space-x-1 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/shoes') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
-                  >
-                    <span>Footwear</span>
-                    <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'shoes' ? 'rotate-180' : ''}`} />
-                  </button>
-                  {pathname.startsWith('/collection/shoes') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
-
-                  {megaMenu.open === 'shoes' && (
-                    <div
-                      onMouseEnter={cancelClose}
-                      onMouseLeave={closeMega}
-                      className="absolute top-full left-0 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
-                    >
-                      <MegaPanel menu={SHOE_MENU} pathname={pathname} />
-                    </div>
-                  )}
+              <Link href="/" className="inline-flex items-center gap-2.5 sm:gap-3 group py-1" aria-label="ACEMEN Home">
+                <img
+                  src="/images/logo.png"
+                  alt="ACEMEN"
+                  className="h-8 sm:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="flex flex-col text-left">
+                  <span className="font-serif text-lg sm:text-2xl tracking-[0.26em] font-medium uppercase text-[#111111] group-hover:opacity-85 transition-opacity block leading-none">
+                    ACEMEN
+                  </span>
+                  <span className="text-[7px] sm:text-[8px] font-sans tracking-[0.32em] text-[#8C5835] font-semibold uppercase block mt-1 leading-none">
+                    LONDON • ATELIER
+                  </span>
                 </div>
-
-                {/* Luggage */}
-                <div
-                  className="relative"
-                  onMouseEnter={() => openMega('bags')}
-                  onMouseLeave={closeMega}
-                >
-                  <button
-                    className={`flex items-center space-x-1 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/bags') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
-                  >
-                    <span>Luggage</span>
-                    <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'bags' ? 'rotate-180' : ''}`} />
-                  </button>
-                  {pathname.startsWith('/collection/bags') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
-
-                  {megaMenu.open === 'bags' && (
-                    <div
-                      onMouseEnter={cancelClose}
-                      onMouseLeave={closeMega}
-                      className="absolute top-full left-0 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
-                    >
-                      <MegaPanel menu={BAG_MENU} pathname={pathname} />
-                    </div>
-                  )}
-                </div>
-
-                {/* Accessories */}
-                <Link
-                  href="/collection/wallets-small-leather-goods"
-                  className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/wallets') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
-                >
-                  Accessories
-                  {pathname.startsWith('/collection/wallets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
-                </Link>
-
-                {/* Dynamically added custom categories (first 1-2 directly, rest in dropdown) */}
-                {dbCategories.slice(0, 1).map((cat) => (
-                  <Link
-                    key={cat.slug}
-                    href={`/collection/${cat.slug}`}
-                    className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith(`/collection/${cat.slug}`) ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
-                  >
-                    {cat.name}
-                    {pathname.startsWith(`/collection/${cat.slug}`) && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
-                  </Link>
-                ))}
-
-                {/* Overflow dropdown if multiple custom categories exist */}
-                {dbCategories.length > 1 && (
-                  <div
-                    className="relative"
-                    onMouseEnter={() => openMega('more')}
-                    onMouseLeave={closeMega}
-                  >
-                    <button
-                      className="flex items-center space-x-1 py-1 whitespace-nowrap text-neutral-700 hover:text-black transition-colors"
-                    >
-                      <span>More</span>
-                      <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'more' ? 'rotate-180' : ''}`} />
-                    </button>
-                    {megaMenu.open === 'more' && (
-                      <div
-                        onMouseEnter={cancelClose}
-                        onMouseLeave={closeMega}
-                        className="absolute top-full left-0 mt-2 w-52 bg-white border border-neutral-200 shadow-2xl py-2 z-50 animate-fadeIn"
-                      >
-                        {dbCategories.slice(1).map((cat) => (
-                          <Link
-                            key={cat.slug}
-                            href={`/collection/${cat.slug}`}
-                            className="block px-4 py-2 text-xs font-mono tracking-wider uppercase text-neutral-700 hover:bg-neutral-50 hover:text-black transition-colors"
-                          >
-                            {cat.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* ACE — Bespoke */}
-                <Link
-                  href="/ace"
-                  className={`relative py-1 whitespace-nowrap transition-colors duration-150 tracking-[0.2em] font-bold ${pathname === '/ace' ? 'text-[#8B5A2B]' : 'text-[#8B5A2B] hover:text-black'}`}
-                  title="ACE — Bespoke Atelier"
-                >
-                  ACE
-                  {pathname === '/ace' && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8B5A2B]" />}
-                </Link>
-              </nav>
-            </div>
-
-            {/* Center: Absolutely Centered Protected Brand Logo */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-center z-10">
-              <Link href="/" className="pointer-events-auto inline-block group py-1" aria-label="ACEMEN Home">
-                <span className="font-serif text-2xl sm:text-3xl tracking-[0.28em] font-light uppercase text-[#111111] group-hover:opacity-85 transition-opacity block leading-none">
-                  ACEMEN
-                </span>
-                <span className="text-[8px] sm:text-[9px] font-sans tracking-[0.35em] text-neutral-500 font-semibold uppercase block mt-1">
-                  LONDON
-                </span>
               </Link>
             </div>
 
+            {/* Center: Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center space-x-4 xl:space-x-6 text-[11px] xl:text-[12px] font-semibold tracking-[0.15em] uppercase whitespace-nowrap">
+              {/* Jackets */}
+              <Link
+                href="/collection/leather-jackets"
+                className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/leather-jackets') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+              >
+                Jackets
+                {pathname.startsWith('/collection/leather-jackets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+              </Link>
+
+              {/* Footwear */}
+              <div
+                className="relative"
+                onMouseEnter={() => openMega('shoes')}
+                onMouseLeave={closeMega}
+              >
+                <button
+                  className={`flex items-center space-x-1 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/shoes') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+                >
+                  <span>Footwear</span>
+                  <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'shoes' ? 'rotate-180' : ''}`} />
+                </button>
+                {pathname.startsWith('/collection/shoes') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+
+                {megaMenu.open === 'shoes' && (
+                  <div
+                    onMouseEnter={cancelClose}
+                    onMouseLeave={closeMega}
+                    className="absolute top-full left-0 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
+                  >
+                    <MegaPanel menu={SHOE_MENU} pathname={pathname} />
+                  </div>
+                )}
+              </div>
+
+              {/* Luggage */}
+              <div
+                className="relative"
+                onMouseEnter={() => openMega('bags')}
+                onMouseLeave={closeMega}
+              >
+                <button
+                  className={`flex items-center space-x-1 py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/bags') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+                >
+                  <span>Luggage</span>
+                  <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'bags' ? 'rotate-180' : ''}`} />
+                </button>
+                {pathname.startsWith('/collection/bags') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+
+                {megaMenu.open === 'bags' && (
+                  <div
+                    onMouseEnter={cancelClose}
+                    onMouseLeave={closeMega}
+                    className="absolute top-full left-0 mt-2 w-72 bg-white border border-neutral-200 shadow-2xl py-4 z-50 animate-fadeIn"
+                  >
+                    <MegaPanel menu={BAG_MENU} pathname={pathname} />
+                  </div>
+                )}
+              </div>
+
+              {/* Accessories */}
+              <Link
+                href="/collection/wallets-small-leather-goods"
+                className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith('/collection/wallets') ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+              >
+                Accessories
+                {pathname.startsWith('/collection/wallets') && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+              </Link>
+
+              {/* Dynamically added custom categories */}
+              {dbCategories.slice(0, 1).map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/collection/${cat.slug}`}
+                  className={`relative py-1 whitespace-nowrap transition-colors duration-150 ${pathname.startsWith(`/collection/${cat.slug}`) ? 'text-[#111111]' : 'text-neutral-700 hover:text-black'}`}
+                >
+                  {cat.name}
+                  {pathname.startsWith(`/collection/${cat.slug}`) && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />}
+                </Link>
+              ))}
+
+              {/* Overflow dropdown if multiple custom categories exist */}
+              {dbCategories.length > 1 && (
+                <div
+                  className="relative"
+                  onMouseEnter={() => openMega('more')}
+                  onMouseLeave={closeMega}
+                >
+                  <button
+                    className="flex items-center space-x-1 py-1 whitespace-nowrap text-neutral-700 hover:text-black transition-colors"
+                  >
+                    <span>More</span>
+                    <ChevronDown size={11} className={`transition-transform duration-200 ${megaMenu.open === 'more' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {megaMenu.open === 'more' && (
+                    <div
+                      onMouseEnter={cancelClose}
+                      onMouseLeave={closeMega}
+                      className="absolute top-full left-0 mt-2 w-52 bg-white border border-neutral-200 shadow-2xl py-2 z-50 animate-fadeIn"
+                    >
+                      {dbCategories.slice(1).map((cat) => (
+                        <Link
+                          key={cat.slug}
+                          href={`/collection/${cat.slug}`}
+                          className="block px-4 py-2 text-xs font-mono tracking-wider uppercase text-neutral-700 hover:bg-neutral-50 hover:text-black transition-colors"
+                        >
+                          {cat.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* ACE — Bespoke */}
+              <Link
+                href="/ace"
+                className={`relative py-1 whitespace-nowrap transition-colors duration-150 tracking-[0.2em] font-bold ${pathname === '/ace' ? 'text-[#8B5A2B]' : 'text-[#8B5A2B] hover:text-black'}`}
+                title="ACE — Bespoke Atelier"
+              >
+                ACE
+                {pathname === '/ace' && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8B5A2B]" />}
+              </Link>
+            </nav>
+
             {/* Right: Currency + Search + Cart */}
-            <div className="flex items-center justify-end space-x-1.5 sm:space-x-4 flex-shrink-0 z-20">
+            <div className="flex items-center justify-end space-x-1.5 sm:space-x-4 shrink-0 z-20">
               {/* Currency */}
               <div className="hidden sm:flex items-center space-x-1 text-[11px] font-medium tracking-wider text-neutral-600 mr-1">
                 {(['GBP', 'USD', 'EUR'] as Currency[]).map((curr) => (

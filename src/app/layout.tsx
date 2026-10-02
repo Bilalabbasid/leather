@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Outfit, Inter, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,54 +8,80 @@ import SearchModal from '@/components/SearchModal';
 import SizeGuideModal from '@/components/SizeGuideModal';
 import Toast from '@/components/Toast';
 
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-heading',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: 'ACEMEN | Direct Luxury Leather Goods & Bespoke Outerwear | London',
+  metadataBase: new URL('https://acemen.co.uk'),
+  title: {
+    default: 'ACEMEN | British Luxury Footwear & Sartorial Leather Atelier • London',
+    template: '%s | ACEMEN',
+  },
   description:
-    'Full-grain leather jackets, Goodyear-welted footwear, and heirloom luggage. Handcrafted in limited allocations with disciplined British tailoring.',
+    'British luxury leather house and master footwear atelier. Handcrafted Goodyear-welted shoes, outerwear, and fine leather goods handcrafted in limited London allocations.',
   keywords: [
     'ACEMEN',
+    'luxury leather footwear',
+    'goodyear welted shoes',
+    'london footwear atelier',
     'luxury leather jacket',
-    'biker jacket',
-    'goodyear welted footwear',
-    'chelsea boot',
-    'acemen london',
-    'full grain leather',
+    'chelsea boots',
+    'oxford shoes',
     'bespoke leather goods',
+    'full grain leather',
   ],
-  metadataBase: new URL('https://acemen.uk'),
-  openGraph: {
-    title: 'ACEMEN London — Luxury Leather Goods & Outerwear',
-    description: 'Disciplined British tailoring, French & Italian tanneries, and direct atelier exclusivity.',
-    url: 'https://acemen.uk',
-    siteName: 'ACEMEN',
-    images: [
-      {
-        url: '/images/hero/editorial_hero.jpg',
-        width: 1920,
-        height: 1080,
-        alt: 'ACEMEN Luxury Leather Outerwear & Footwear Atelier',
-      },
-    ],
-    locale: 'en_GB',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'ACEMEN | Direct Luxury Leather Goods',
-    description: 'Full-grain leather jackets, Goodyear-welted footwear, and heirloom luggage.',
-    images: ['/images/hero/editorial_hero.jpg'],
-  },
+  authors: [{ name: 'ACEMEN' }],
+  creator: 'ACEMEN',
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.png', type: 'image/png' },
       { url: '/favicon.ico' },
     ],
     shortcut: ['/favicon.ico'],
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/favicon.png', sizes: '180x180', type: 'image/png' },
     ],
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    url: 'https://acemen.co.uk',
+    siteName: 'ACEMEN',
+    title: 'ACEMEN | British Luxury Footwear & Sartorial Leather Atelier • London',
+    description: 'Disciplined British tailoring, French & Italian tanneries, and direct atelier exclusivity.',
+    images: [
+      {
+        url: '/images/luxury/hero-campaign.webp',
+        width: 1920,
+        height: 1080,
+        alt: 'ACEMEN British Luxury Footwear & Leather Atelier',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ACEMEN | British Luxury Footwear & Sartorial Leather Atelier',
+    description: 'Handcrafted Goodyear-welted shoes, tailored leather outerwear, and fine leather goods.',
+    images: ['/images/luxury/hero-campaign.webp'],
   },
 };
 
@@ -64,8 +91,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="bg-white text-[#111111] antialiased">
-      <body className="min-h-screen flex flex-col justify-between selection:bg-[#111111] selection:text-white bg-white text-[#111111]">
+    <html lang="en" className={`${cormorant.variable} ${outfit.variable} ${inter.variable} bg-white text-[#111111] antialiased`}>
+      <body className="min-h-screen flex flex-col justify-between selection:bg-[#111111] selection:text-white bg-white text-[#111111] font-sans">
         <Navbar />
         <main className="flex-1 w-full">{children}</main>
         <Footer />

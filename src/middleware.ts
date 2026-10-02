@@ -8,7 +8,15 @@ const JWT_SECRET = new TextEncoder().encode(
 const COOKIE_NAME = 'acemen_admin_token';
 
 export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const host = req.headers.get('host') || '';
+  const { pathname, search } = req.nextUrl;
+
+  // Permanent 301 redirect from acemen.uk -> acemen.co.uk
+  if (host === 'acemen.uk' || host === 'www.acemen.uk') {
+    return NextResponse.redirect(`https://acemen.co.uk${pathname}${search}`, {
+      status: 301,
+    });
+  }
 
   // Protect Admin routes
   if (pathname.startsWith('/admin')) {

@@ -39,6 +39,9 @@ yarn-error.log*
 .env.test
 !.env.example
 
+# Reference backup folder
+/acemen/
+
 # Vercel
 .vercel
 

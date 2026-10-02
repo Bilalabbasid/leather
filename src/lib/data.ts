@@ -6,7 +6,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     name: 'Leather Jackets',
     slug: 'leather-jackets',
     description: 'Masterfully hand-cut full-grain lambskin, steerhide, and Spanish shearling jackets engineered with British tailoring restraint.',
-    image: '/images/products/biker_jacket_front.jpg',
+    image: '/images/luxury/prod-jacket-classic-1.webp',
     displayPriority: 100,
     isActive: true,
   },
@@ -15,7 +15,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     name: 'Shoes',
     slug: 'shoes',
     description: 'Goodyear-welted dress shoes and hand-burnished Chelsea boots crafted in Northamptonshire and Florence. Matching pairs shown.',
-    image: '/images/products/oxford_pair_front.jpg',
+    image: '/images/luxury/prod-shoe-oxford-pair.webp',
     displayPriority: 90,
     isActive: true,
   },
@@ -24,7 +24,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     name: 'Bags',
     slug: 'bags',
     description: 'Structured full-grain leather weekender duffels, briefcases, and architectural travel accessories.',
-    image: '/images/products/duffel_front.jpg',
+    image: '/images/luxury/prod-weekender-1.webp',
     displayPriority: 80,
     isActive: true,
   },
@@ -33,7 +33,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     name: 'Wallets & Small Leather Goods',
     slug: 'wallets-small-leather-goods',
     description: 'French vegetable-tanned cardholders, bifold wallets, and passport cases hand-stitched with waxed linen thread.',
-    image: '/images/products/wallet_front.jpg',
+    image: '/images/luxury/prod-wallet-1.webp',
     displayPriority: 70,
     isActive: true,
   },
@@ -42,7 +42,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     name: 'Belts & Accessories',
     slug: 'belts-accessories',
     description: 'Solid brass and palladium hardware mounted on bridle leather straps and handcrafted accessories.',
-    image: '/images/products/wallet_front.jpg',
+    image: '/images/luxury/prod-belt-1.webp',
     displayPriority: 60,
     isActive: true,
   },
@@ -57,7 +57,7 @@ export const SHOE_SUBCATEGORIES: Category[] = [
     name: 'Oxford Shoes',
     slug: 'shoes-oxford',
     description: 'Closed-lacing Goodyear-welted Oxford dress shoes in mirror-burnished French box calfskin. Shown as complete matching pairs.',
-    image: '/images/products/oxford_pair_front.jpg',
+    image: '/images/luxury/prod-shoe-oxford-pair.webp',
     displayPriority: 89,
     isActive: true,
   },
@@ -66,7 +66,7 @@ export const SHOE_SUBCATEGORIES: Category[] = [
     name: 'Chelsea Boots',
     slug: 'shoes-chelsea',
     description: 'Architectural wholecut Chelsea boots in full-grain Florentine calfskin with storm-welted weather resistance.',
-    image: '/images/products/chelsea_pair_front.jpg',
+    image: '/images/luxury/prod-shoe-chelsea-pair.webp',
     displayPriority: 88,
     isActive: true,
   },
@@ -75,7 +75,7 @@ export const SHOE_SUBCATEGORIES: Category[] = [
     name: 'Derby Shoes',
     slug: 'shoes-derby',
     description: 'Open-lacing derby silhouettes in vegetable-tanned calf. Versatile enough for City or country.',
-    image: '/images/products/oxford_pair_front.jpg',
+    image: '/images/luxury/prod-shoe-casualderby-pair.webp',
     displayPriority: 87,
     isActive: true,
   },
@@ -84,7 +84,7 @@ export const SHOE_SUBCATEGORIES: Category[] = [
     name: 'Loafers',
     slug: 'shoes-loafer',
     description: 'Hand-sewn penny and tassel loafers in buttery soft calfskin with flexible leather soles.',
-    image: '/images/products/oxford_pair_top.jpg',
+    image: '/images/luxury/prod-shoe-loafer-pair.webp',
     displayPriority: 86,
     isActive: true,
   },
@@ -93,7 +93,7 @@ export const SHOE_SUBCATEGORIES: Category[] = [
     name: 'Monk Straps',
     slug: 'shoes-monk',
     description: 'Single and double monk strap shoes with solid brass buckles and Goodyear-welted construction.',
-    image: '/images/products/oxford_pair_front.jpg',
+    image: '/images/luxury/prod-shoe-monk-pair.webp',
     displayPriority: 85,
     isActive: true,
   },
@@ -102,7 +102,7 @@ export const SHOE_SUBCATEGORIES: Category[] = [
     name: 'Dress Boots',
     slug: 'shoes-boots',
     description: 'Lace-up dress boots in full-grain calf and antiqued leathers with storm-welted soles.',
-    image: '/images/products/chelsea_pair_back.jpg',
+    image: '/images/luxury/prod-shoe-dressboot-pair.webp',
     displayPriority: 84,
     isActive: true,
   },
@@ -117,7 +117,7 @@ export const BAG_SUBCATEGORIES: Category[] = [
     name: 'Laptop Bags & Briefcases',
     slug: 'bags-laptop',
     description: 'Structured full-grain leather briefcases and laptop bags built for daily City use.',
-    image: '/images/products/duffel_front.jpg',
+    image: '/images/luxury/prod-briefcase-1.webp',
     displayPriority: 79,
     isActive: true,
   },
@@ -126,7 +126,7 @@ export const BAG_SUBCATEGORIES: Category[] = [
     name: 'Handbags & Totes',
     slug: 'bags-handbag',
     description: 'Architectural totes and handbags in pebbled full-grain cowhide with brass hardware.',
-    image: '/images/products/duffel_angle.jpg',
+    image: '/images/luxury/prod-tote-1.webp',
     displayPriority: 78,
     isActive: true,
   },
@@ -135,7 +135,7 @@ export const BAG_SUBCATEGORIES: Category[] = [
     name: 'Weekender & Duffel',
     slug: 'bags-weekender',
     description: 'Executive travel duffels and weekender bags engineered to international carry-on dimensions.',
-    image: '/images/products/duffel_front.jpg',
+    image: '/images/luxury/prod-weekender-1.webp',
     displayPriority: 77,
     isActive: true,
   },
@@ -144,7 +144,7 @@ export const BAG_SUBCATEGORIES: Category[] = [
     name: 'Backpacks',
     slug: 'bags-backpack',
     description: 'Full-grain leather rucksacks combining function with refined atelier aesthetics.',
-    image: '/images/products/duffel_angle.jpg',
+    image: '/images/luxury/prod-weekender-2.webp',
     displayPriority: 76,
     isActive: true,
   },
@@ -153,7 +153,7 @@ export const BAG_SUBCATEGORIES: Category[] = [
     name: 'Messenger Bags',
     slug: 'bags-messenger',
     description: 'Single-strap messenger bags in bridle leather with adjustable canvas webbing straps.',
-    image: '/images/products/duffel_front.jpg',
+    image: '/images/luxury/prod-briefcase-2.webp',
     displayPriority: 75,
     isActive: true,
   },
@@ -192,14 +192,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-jkt-1',
-        url: '/images/products/biker_jacket_front.jpg',
+        url: '/images/luxury/prod-jacket-classic-1.webp',
         altText: 'ACEMEN The Sovereign Biker Jacket front view',
         position: 0,
         isPrimary: true,
       },
       {
         id: 'img-jkt-2',
-        url: '/images/products/biker_jacket_back.jpg',
+        url: '/images/luxury/prod-jacket-bomber-1.webp',
         altText: 'ACEMEN The Sovereign Biker Jacket tailored back view',
         position: 1,
         isPrimary: false,
@@ -290,14 +290,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-avi-1',
-        url: '/images/products/shearling_jacket_front.jpg',
+        url: '/images/luxury/prod-jacket-bomber-1.webp',
         altText: 'ACEMEN The Elysian Shearling Aviator jacket front view',
         position: 0,
         isPrimary: true,
       },
       {
         id: 'img-avi-2',
-        url: '/images/products/shearling_jacket_back.jpg',
+        url: '/images/luxury/prod-jacket-classic-1.webp',
         altText: 'ACEMEN The Elysian Shearling Aviator jacket back view',
         position: 1,
         isPrimary: false,
@@ -388,15 +388,15 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-ox-1',
-        url: '/images/products/oxford_pair_front.jpg',
+        url: '/images/luxury/prod-shoe-oxford-pair.webp',
         altText: 'ACEMEN The Cadogan Oxford dress shoes complete matching pair front angle',
         position: 0,
         isPrimary: true,
       },
       {
         id: 'img-ox-2',
-        url: '/images/products/oxford_pair_top.jpg',
-        altText: 'ACEMEN The Cadogan Oxford dress shoes complete matching pair top view',
+        url: '/images/luxury/prod-oxford-1.webp',
+        altText: 'ACEMEN The Cadogan Oxford dress shoes single profile view',
         position: 1,
         isPrimary: false,
       },
@@ -486,15 +486,15 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-ch-1',
-        url: '/images/products/chelsea_pair_front.jpg',
+        url: '/images/luxury/prod-shoe-chelsea-pair.webp',
         altText: 'ACEMEN The Mayfair Chelsea boots complete matching pair front angle',
         position: 0,
         isPrimary: true,
       },
       {
         id: 'img-ch-2',
-        url: '/images/products/chelsea_pair_back.jpg',
-        altText: 'ACEMEN The Mayfair Chelsea boots complete matching pair rear heel view',
+        url: '/images/luxury/prod-chelsea-1.webp',
+        altText: 'ACEMEN The Mayfair Chelsea boot side profile view',
         position: 1,
         isPrimary: false,
       },
@@ -583,14 +583,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-duf-1',
-        url: '/images/products/duffel_front.jpg',
+        url: '/images/luxury/prod-weekender-1.webp',
         altText: 'ACEMEN The Kensington Weekender duffel front view',
         position: 0,
         isPrimary: true,
       },
       {
         id: 'img-duf-2',
-        url: '/images/products/duffel_angle.jpg',
+        url: '/images/luxury/prod-weekender-2.webp',
         altText: 'ACEMEN The Kensington Weekender duffel side perspective view',
         position: 1,
         isPrimary: false,
@@ -636,14 +636,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-wlt-1',
-        url: '/images/products/wallet_front.jpg',
+        url: '/images/luxury/prod-cardholder-1.webp',
         altText: 'ACEMEN The Belgravia Cardholder flat lay view',
         position: 0,
         isPrimary: true,
       },
       {
         id: 'img-wlt-2',
-        url: '/images/products/wallet_detail.jpg',
+        url: '/images/luxury/prod-cardholder-2.webp',
         altText: 'ACEMEN The Belgravia Cardholder saddle stitching detail',
         position: 1,
         isPrimary: false,
@@ -689,7 +689,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-drb-1',
-        url: '/images/products/derby_shoes_pair.jpg',
+        url: '/images/luxury/prod-shoe-casualderby-pair.webp',
         altText: 'ACEMEN Marylebone Derby Brogue pair on marble',
         position: 0,
         isPrimary: true,
@@ -729,7 +729,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-lof-1',
-        url: '/images/products/loafer_shoes_pair.jpg',
+        url: '/images/luxury/prod-shoe-loafer-pair.webp',
         altText: 'ACEMEN Mayfair Cognac Loafer pair on stone',
         position: 0,
         isPrimary: true,
@@ -769,7 +769,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-mnk-1',
-        url: '/images/products/monk_strap_shoes_pair.jpg',
+        url: '/images/luxury/prod-shoe-monk-pair.webp',
         altText: 'ACEMEN Westminster Double Monk strap shoes pair',
         position: 0,
         isPrimary: true,
@@ -809,7 +809,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-kbt-1',
-        url: '/images/products/dress_boots_pair.jpg',
+        url: '/images/luxury/prod-shoe-dressboot-pair.webp',
         altText: 'ACEMEN Knightsbridge Dress Boot pair on marble',
         position: 0,
         isPrimary: true,
@@ -849,7 +849,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-bfc-1',
-        url: '/images/products/leather_briefcase.jpg',
+        url: '/images/luxury/prod-briefcase-1.webp',
         altText: 'ACEMEN City Leather Briefcase in cognac standing upright',
         position: 0,
         isPrimary: true,
@@ -885,7 +885,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-hbg-1',
-        url: '/images/products/leather_handbag.jpg',
+        url: '/images/luxury/prod-tote-1.webp',
         altText: 'ACEMEN Kensington Structured Handbag on marble plinth',
         position: 0,
         isPrimary: true,
@@ -921,7 +921,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-bpk-1',
-        url: '/images/products/leather_backpack.jpg',
+        url: '/images/luxury/prod-weekender-2.webp',
         altText: 'ACEMEN Fitzrovia Leather Backpack on marble plinth',
         position: 0,
         isPrimary: true,
@@ -957,7 +957,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-msg-1',
-        url: '/images/products/leather_messenger_bag.jpg',
+        url: '/images/luxury/prod-briefcase-2.webp',
         altText: 'ACEMEN Shoreditch Messenger Bag on concrete',
         position: 0,
         isPrimary: true,
@@ -993,7 +993,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     images: [
       {
         id: 'img-blt-1',
-        url: '/images/products/leather_belt_product.jpg',
+        url: '/images/luxury/prod-belt-1.webp',
         altText: 'ACEMEN Mayfair Bridle Belt coiled on marble surface',
         position: 0,
         isPrimary: true,

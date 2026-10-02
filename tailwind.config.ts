@@ -11,6 +11,33 @@ const config: Config = {
       colors: {
         background: "#FFFFFF",
         foreground: "#111111",
+        noir: {
+          950: '#080808',
+          900: '#0f0f0f',
+          850: '#141414',
+          800: '#1c1c1c',
+          700: '#2a2a2a',
+          600: '#3d3d3d',
+        },
+        ivory: {
+          50: '#fcfbf8',
+          100: '#f8f6f0',
+          200: '#f0ece1',
+          300: '#e5dfd0',
+          400: '#cfc6b2',
+        },
+        leather: {
+          espresso: '#2b1e16',
+          cognac: '#8c5835',
+          saddle: '#a06a3b',
+          tan: '#c29b6e',
+          sand: '#dfcfbe',
+        },
+        champagne: {
+          400: '#dfc278',
+          500: '#c5a869',
+          600: '#ad9051',
+        },
         luxury: {
           black: "#0D0D0D",
           noir: "#141414",
@@ -27,8 +54,11 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ["var(--font-cormorant)", "Playfair Display", "Georgia", "serif"],
-        sans: ["var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-cormorant)", "Cormorant Garamond", "serif"],
+        heading: ["var(--font-heading)", "Outfit", "sans-serif"],
+        body: ["var(--font-body)", "var(--font-inter)", "Inter", "sans-serif"],
+        serif: ["var(--font-display)", "var(--font-cormorant)", "Playfair Display", "Georgia", "serif"],
+        sans: ["var(--font-body)", "var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
       },
       letterSpacing: {
         widest: "0.25em",

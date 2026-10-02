@@ -21,8 +21,8 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "prisma/**/*.ts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "acemen"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs",

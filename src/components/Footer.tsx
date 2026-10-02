@@ -15,21 +15,33 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 pb-14 border-b border-neutral-800">
           {/* Brand Manifesto Column */}
           <div className="lg:col-span-2 pr-0 lg:pr-8">
-            <Link href="/" className="inline-block mb-4">
-              <span className="font-serif text-3xl tracking-[0.25em] font-light uppercase text-white block">
-                ACEMEN
-              </span>
-              <span className="text-[9px] font-sans tracking-[0.35em] text-neutral-400 uppercase block -mt-0.5">
-                LONDON • ATELIER
-              </span>
+            <Link href="/" className="flex items-center gap-3.5 mb-4 group">
+              <img
+                src="/images/logo.png"
+                alt="ACEMEN"
+                className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="flex flex-col">
+                <span className="font-serif text-2xl tracking-[0.25em] font-light uppercase text-white block leading-none">
+                  ACEMEN
+                </span>
+                <span className="text-[8px] font-sans tracking-[0.35em] text-[#C5A869] uppercase block mt-1">
+                  LONDON • ATELIER
+                </span>
+              </div>
             </Link>
             <p className="text-xs text-neutral-400 font-sans leading-relaxed max-w-sm mb-6">
-              Rooted in the quiet pursuit of permanence. Handcrafted leather jackets, Goodyear-welted footwear, and architectural travel luggage sculpted from the rarest hides in Europe. London atelier founded on uncompromising provenance.
+              ACEMEN is a British luxury leather house and master footwear atelier incorporated in the United Kingdom. We craft fine Goodyear-welted shoes, outerwear, holdalls, and small leather goods available by pre-order, private allocation, and bespoke commission.
             </p>
             <div className="text-[11px] text-neutral-400 font-mono tracking-widest space-y-1">
-              <p>Mayfair Atelier & Showroom</p>
-              <p>12 Savile Row, London W1S 3PQ</p>
-              <p className="text-white pt-1">concierge@acemen.uk</p>
+              <p className="text-white font-sans text-xs font-medium">London Headquarters & Atelier</p>
+              <p>551 Staines Road, Hounslow, Middlesex</p>
+              <p>London TW4 5DL, United Kingdom</p>
+              <div className="pt-2 flex items-center space-x-3 text-xs">
+                <a href="mailto:info@acemen.co.uk" className="text-white hover:text-[#C5A869] transition-colors">info@acemen.co.uk</a>
+                <span className="text-neutral-600">•</span>
+                <a href="tel:+447587386522" className="text-white hover:text-[#C5A869] transition-colors">+44 7587 386522</a>
+              </div>
             </div>
           </div>
 
@@ -128,7 +140,7 @@ export default function Footer() {
         {/* Bottom Legal & Attribution */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-neutral-500 font-mono tracking-wider space-y-4 sm:space-y-0">
           <div>
-            © {new Date().getFullYear()} ACEMEN LIMITED. ALL RIGHTS RESERVED. ACEMEN.UK
+            © {new Date().getFullYear()} ACEMEN LIMITED. LONDON, UNITED KINGDOM • ACEMEN.CO.UK
           </div>
           <div className="flex space-x-6 text-[10px] uppercase tracking-widest">
             <span>Privacy Policy</span>
