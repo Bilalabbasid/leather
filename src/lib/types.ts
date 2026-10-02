@@ -118,7 +118,7 @@ export interface Order {
   taxInPence: number;
   discountInPence: number;
   totalInPence: number;
-  status: 'PENDING' | 'PAID' | 'DISPATCHED' | 'CANCELLED' | 'REFUNDED';
+  status: 'PENDING' | 'PAID' | 'PROCESSING' | 'DISPATCHED' | 'DELIVERED' | 'CANCELLED' | 'REFUNDED';
   createdAt: string | Date;
   updatedAt?: string | Date;
   orderItems?: OrderItem[];

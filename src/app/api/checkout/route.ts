@@ -55,7 +55,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    // Dynamic host detection for accurate redirection across localhost and production domains
+    const reqHost = req.headers.get('x-forwarded-host') || req.headers.get('host');
+    const reqProto = req.headers.get('x-forwarded-proto') || 'https';
+    const detectedUrl = reqHost ? `${reqProto}://${reqHost}` : undefined;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || detectedUrl || 'https://acemen.co.uk';
+
     let subtotalInPence = 0;
     const verifiedLineItems: Array<{
       variant: (typeof dbVariants)[0];
@@ -105,11 +110,11 @@ export async function POST(req: NextRequest) {
 
       const primaryImg =
         variant.product.images.find((img) => img.isPrimary) || variant.product.images[0];
-      const imageUrl = primaryImg?.url
-        ? primaryImg.url.startsWith('http')
+      // Stripe requires images to be public HTTPS URLs. If not https, omit to avoid rejection.
+      const imageUrl =
+        primaryImg?.url && primaryImg.url.startsWith('https://')
           ? primaryImg.url
-          : `${appUrl}${primaryImg.url}`
-        : undefined;
+          : undefined;
 
       stripeLineItems.push({
         price_data: {
@@ -130,13 +135,17 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // 3. Check Stripe credentials
-    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    // 3. Check Stripe credentials (trim and support sk_ and rk_ keys)
+    const rawStripeKey = process.env.STRIPE_SECRET_KEY;
+    const stripeKey = rawStripeKey?.trim();
     const isStripeConfigured =
-      stripeKey &&
+      !!stripeKey &&
       !stripeKey.includes('mock') &&
       !stripeKey.includes('placeholder') &&
-      (stripeKey.startsWith('sk_test_') || stripeKey.startsWith('sk_live_'));
+      (stripeKey.startsWith('sk_test_') ||
+        stripeKey.startsWith('sk_live_') ||
+        stripeKey.startsWith('rk_test_') ||
+        stripeKey.startsWith('rk_live_'));
 
     if (!isStripeConfigured) {
       return NextResponse.json(
@@ -154,7 +163,7 @@ export async function POST(req: NextRequest) {
     const pendingOrder = await prisma.order.create({
       data: {
         orderNumber,
-        customerEmail: 'pending-checkout@acemen.uk',
+        customerEmail: 'pending-checkout@acemen.co.uk',
         subtotalInPence,
         totalInPence: subtotalInPence,
         currency: 'GBP',
@@ -175,14 +184,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // 5. Create Stripe Checkout Session
+    // 5. Create Stripe Checkout Session with worldwide luxury delivery support
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: stripeLineItems,
       mode: 'payment',
       billing_address_collection: 'required',
       shipping_address_collection: {
-        allowed_countries: ['GB', 'US', 'FR', 'DE', 'IT', 'CH', 'AE', 'CA', 'AU', 'JP'],
+        allowed_countries: [
+          'GB', 'US', 'FR', 'DE', 'IT', 'CH', 'AE', 'CA', 'AU', 'JP',
+          'ES', 'NL', 'SE', 'DK', 'NO', 'BE', 'AT', 'IE', 'SA', 'QA', 'SG', 'HK'
+        ],
+      },
+      phone_number_collection: {
+        enabled: true,
       },
       success_url: `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&order_id=${pendingOrder.id}`,
       cancel_url: `${appUrl}/checkout/cancel?order_id=${pendingOrder.id}`,

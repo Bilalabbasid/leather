@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
   const body = await req.text();
   const signature = req.headers.get('stripe-signature');
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
 
   if (!webhookSecret) {
     console.error('[Stripe Webhook] Webhook secret is not configured.');
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
         const sessionId = session.id;
 
         const customerEmail =
-          session.customer_details?.email || session.customer_email || 'client@acemen.uk';
+          session.customer_details?.email || session.customer_email || 'client@acemen.co.uk';
         const customerName = session.customer_details?.name || 'ACEMEN Patron';
         const shippingAddress = session.shipping_details?.address
           ? JSON.stringify(session.shipping_details.address)
@@ -85,29 +85,33 @@ export async function POST(req: NextRequest) {
           }
 
           if (order) {
-            // Update order to PAID
+            const shouldDecrement = order.status === 'PENDING';
+
+            // Update order to PAID if currently pending
             await tx.order.update({
               where: { id: order.id },
               data: {
-                status: 'PAID',
-                stripePaymentIntentId: paymentIntentId,
-                customerEmail,
-                customerName,
-                shippingAddress,
+                status: order.status === 'PENDING' ? 'PAID' : order.status,
+                stripePaymentIntentId: paymentIntentId || order.stripePaymentIntentId,
+                customerEmail: customerEmail || order.customerEmail,
+                customerName: customerName || order.customerName,
+                shippingAddress: shippingAddress || order.shippingAddress,
               },
             });
 
             // Atomically decrement variant stock for each ordered line item
-            for (const item of order.orderItems) {
-              if (item.variantId) {
-                await tx.variant.update({
-                  where: { id: item.variantId },
-                  data: {
-                    stockQuantity: {
-                      decrement: item.quantity,
+            if (shouldDecrement) {
+              for (const item of order.orderItems) {
+                if (item.variantId) {
+                  await tx.variant.update({
+                    where: { id: item.variantId },
+                    data: {
+                      stockQuantity: {
+                        decrement: item.quantity,
+                      },
                     },
-                  },
-                });
+                  });
+                }
               }
             }
           }

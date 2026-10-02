@@ -6,7 +6,7 @@ import { getAdminSessionFromRequest } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
 const updateOrderStatusSchema = z.object({
-  status: z.enum(['PENDING', 'PAID', 'DISPATCHED', 'CANCELLED', 'REFUNDED']),
+  status: z.enum(['PENDING', 'PAID', 'PROCESSING', 'DISPATCHED', 'DELIVERED', 'CANCELLED', 'REFUNDED']),
 });
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {

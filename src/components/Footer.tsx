@@ -86,9 +86,10 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs text-neutral-400 font-sans tracking-wide">
               <li>
-                <span className="hover:text-white transition-colors">
-                  Private Salon Appointments
-                </span>
+                <Link href="/track-order" className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A869]"></span>
+                  <span>Track Order & Delivery</span>
+                </Link>
               </li>
               <li>
                 <span className="hover:text-white transition-colors">
