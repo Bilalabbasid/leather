@@ -38,6 +38,7 @@ const BAG_MENU = {
 const SIMPLE_NAV = [
   { label: 'Jackets', href: '/collection/leather-jackets' },
   { label: 'Accessories', href: '/collection/wallets-small-leather-goods' },
+  { label: 'Waitlist', href: '/waitlist' },
 ];
 
 interface MegaMenuState {

@@ -228,3 +228,27 @@ model StripeWebhookEvent {
   @@index([processingStatus])
   @@map("stripe_webhook_events")
 }
+
+// -------------------------------------------------------------
+// Waitlist & Private Allocation Registry
+// -------------------------------------------------------------
+model WaitlistEntry {
+  id              String    @id @default(cuid())
+  name            String
+  email           String
+  phone           String    // Client telephone/mobile number
+  deliveryAddress String    // Delivery address & postal destination
+  category        String    @default("Waitlist")
+  productTitle    String?
+  productId       String?
+  preferredSize   String?
+  notes           String?   // Special requirements, sizing or bespoke notes
+  status          String    @default("PENDING") // PENDING, CONTACTED, ALLOCATED, FULFILLED, CANCELLED
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([email])
+  @@index([phone])
+  @@index([status])
+  @@map("waitlist_entries")
+}

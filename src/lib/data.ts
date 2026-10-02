@@ -46,6 +46,15 @@ export const INITIAL_CATEGORIES: Category[] = [
     displayPriority: 60,
     isActive: true,
   },
+  {
+    id: 'cat-waitlist',
+    name: 'Waitlist & Bespoke',
+    slug: 'waitlist',
+    description: 'Exclusive atelier pre-order allocations, bespoke commissions, and limited vault creations available by private waitlist invitation.',
+    image: '/images/luxury/hero-campaign.webp',
+    displayPriority: 50,
+    isActive: true,
+  },
 ];
 
 // ---------------------------------------------------------------------------

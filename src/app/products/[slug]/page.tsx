@@ -13,8 +13,11 @@ import {
   ShoppingBag,
   Check,
   ZoomIn,
+  Sparkles,
+  Clock,
 } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
+import WaitlistModal from '@/components/WaitlistModal';
 
 interface PDPProps {
   params: {
@@ -145,6 +148,7 @@ export default function ProductDetailPage({ params }: PDPProps) {
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [openSection, setOpenSection] = useState<'desc' | 'craft' | 'care' | 'delivery' | null>('desc');
   const [showStickyBar, setShowStickyBar] = useState(false);
+  const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
   const addToBagRef = useRef<HTMLButtonElement>(null);
 
   // Show sticky bar when main add-to-bag button scrolls out of view
@@ -488,27 +492,48 @@ export default function ProductDetailPage({ params }: PDPProps) {
                   </p>
                 )}
 
-                {/* Add to Shopping Bag Action */}
-                <button
-                  ref={addToBagRef}
-                  onClick={handleAdd}
-                  disabled={!selectedVariant || selectedVariant.stockQuantity <= 0}
-                  className="w-full min-h-[50px] py-4 bg-[#111111] hover:bg-black text-white text-xs uppercase tracking-[0.2em] font-medium transition-colors flex items-center justify-center space-x-2 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
-                >
-                  {selectedVariant?.stockQuantity <= 0 ? (
-                    <span>Allocation Currently Exhausted</span>
-                  ) : addedAnimation ? (
-                    <>
-                      <Check size={14} />
-                      <span>Added to Shopping Bag</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag size={14} />
-                      <span>Add to Shopping Bag</span>
-                    </>
-                  )}
-                </button>
+                {/* Action Buttons: Add to Bag or Join Waitlist */}
+                {selectedVariant?.stockQuantity <= 0 || product.categoryId === 'cat-waitlist' || product.category?.slug === 'waitlist' ? (
+                  <button
+                    ref={addToBagRef}
+                    type="button"
+                    onClick={() => setWaitlistModalOpen(true)}
+                    className="w-full min-h-[50px] py-4 bg-[#111111] hover:bg-black text-white text-xs uppercase tracking-[0.2em] font-medium transition-colors flex items-center justify-center space-x-2 shadow-xs"
+                  >
+                    <Sparkles size={14} className="text-[#C5A869]" />
+                    <span>Join Atelier Waitlist / Reserve Allocation</span>
+                  </button>
+                ) : (
+                  <div className="space-y-2">
+                    <button
+                      ref={addToBagRef}
+                      onClick={handleAdd}
+                      disabled={!selectedVariant}
+                      className="w-full min-h-[50px] py-4 bg-[#111111] hover:bg-black text-white text-xs uppercase tracking-[0.2em] font-medium transition-colors flex items-center justify-center space-x-2 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
+                    >
+                      {addedAnimation ? (
+                        <>
+                          <Check size={14} />
+                          <span>Added to Shopping Bag</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingBag size={14} />
+                          <span>Add to Shopping Bag</span>
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setWaitlistModalOpen(true)}
+                      className="w-full py-2.5 border border-[#E5E5E5] hover:border-[#111111] text-[#767676] hover:text-[#111111] text-[10px] uppercase tracking-[0.16em] font-mono transition-colors flex items-center justify-center gap-1.5"
+                    >
+                      <Clock size={11} className="text-[#C5A869]" />
+                      <span>Request Bespoke Sizing / Private Allocation</span>
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Expandable Accordions: Craft Notes, Care, Delivery */}
@@ -670,6 +695,16 @@ export default function ProductDetailPage({ params }: PDPProps) {
           </button>
         </div>
       </div>
+
+      {/* Waitlist & Bespoke Allocation Modal */}
+      <WaitlistModal
+        isOpen={waitlistModalOpen}
+        onClose={() => setWaitlistModalOpen(false)}
+        productTitle={product.title}
+        productId={product.id}
+        category={product.category?.name || 'Waitlist'}
+        initialSize={selectedVariant?.size}
+      />
     </div>
   );
 }

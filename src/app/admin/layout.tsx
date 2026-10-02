@@ -15,6 +15,7 @@ import {
   X,
   ShieldCheck,
   Tag,
+  Clock,
 } from 'lucide-react';
 import Toast from '@/components/Toast';
 
@@ -43,6 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: 'Products', href: '/admin/products', icon: Package },
     { label: 'Categories', href: '/admin/categories', icon: Tag },
     { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+    { label: 'Waitlist', href: '/admin/waitlist', icon: Clock },
     { label: 'Settings', href: '/admin/settings', icon: Settings },
   ];
 
