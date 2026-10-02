@@ -47,7 +47,7 @@ export default function NewProductPage() {
   const [styleCode, setStyleCode] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [priceInPence, setPriceInPence] = useState<number>(185000);
-  const [status, setStatus] = useState<'ACTIVE' | 'DRAFT' | 'ARCHIVED'>('ACTIVE');
+  const [status, setStatus] = useState<'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK' | 'WAITLIST'>('ACTIVE');
 
   // Materials
   const [material, setMaterial] = useState('Italian Full-Grain Calfskin');
@@ -253,7 +253,10 @@ export default function NewProductPage() {
   };
 
   // Submit
-  const handleSubmit = async (e: React.FormEvent, saveStatus: 'ACTIVE' | 'DRAFT' | 'ARCHIVED' = 'ACTIVE') => {
+  const handleSubmit = async (
+    e: React.FormEvent,
+    saveStatus: 'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK' | 'WAITLIST' = 'ACTIVE'
+  ) => {
     e.preventDefault();
     if (!title.trim()) { showToast('Product title is required.'); return; }
     if (!styleCode.trim()) { showToast('Style code / SKU is required.'); return; }
@@ -440,14 +443,26 @@ export default function NewProductPage() {
                 <select
                   required
                   value={categoryId}
-                  onChange={(e) => setCategoryId(e.target.value)}
+                  onChange={(e) => {
+                    setCategoryId(e.target.value);
+                    if (e.target.value === 'cat-waitlist') {
+                      setStatus('WAITLIST');
+                    }
+                  }}
                   className="w-full px-3 py-2.5 border border-[#E5E5E5] text-sm text-[#111111] bg-white focus:outline-none focus:border-[#111111] transition-colors"
                 >
                   <option value="">Select…</option>
                   {categories.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
+                    <option key={c.id} value={c.id}>
+                      {c.name} {c.id === 'cat-waitlist' ? '★ (Private Allocation)' : ''}
+                    </option>
                   ))}
                 </select>
+                {categoryId === 'cat-waitlist' && (
+                  <p className="text-[10px] font-mono text-[#C5A869] mt-1 font-semibold">
+                    ★ Piece will be assigned to Private Waitlist & Bespoke Allocation
+                  </p>
+                )}
               </div>
 
               <div>
@@ -475,13 +490,20 @@ export default function NewProductPage() {
                 </label>
                 <select
                   value={status}
-                  onChange={(e) => setStatus(e.target.value as 'ACTIVE' | 'DRAFT' | 'ARCHIVED')}
+                  onChange={(e) => setStatus(e.target.value as any)}
                   className="w-full px-3 py-2.5 border border-[#E5E5E5] text-sm text-[#111111] bg-white focus:outline-none focus:border-[#111111] transition-colors"
                 >
-                  <option value="ACTIVE">ACTIVE — Live</option>
+                  <option value="ACTIVE">ACTIVE — Live Storefront</option>
+                  <option value="WAITLIST">WAITLIST — Private Allocation / Pre-Order</option>
                   <option value="DRAFT">DRAFT — Hidden</option>
+                  <option value="OUT_OF_STOCK">OUT OF STOCK</option>
                   <option value="ARCHIVED">ARCHIVED</option>
                 </select>
+                {status === 'WAITLIST' && (
+                  <p className="text-[10px] font-mono text-[#C5A869] mt-1">
+                    Clients will register with name, phone & delivery address
+                  </p>
+                )}
               </div>
             </div>
           </div>

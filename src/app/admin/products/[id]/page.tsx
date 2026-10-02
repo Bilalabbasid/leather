@@ -56,7 +56,7 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
   const [categoryId, setCategoryId] = useState('cat-jackets');
   const [priceInPence, setPriceInPence] = useState<number>(185000);
   const [pricePounds, setPricePounds] = useState('1850.00');
-  const [status, setStatus] = useState<'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK'>('ACTIVE');
+  const [status, setStatus] = useState<'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK' | 'WAITLIST'>('ACTIVE');
   const [material, setMaterial] = useState('Italian Full-Grain Calfskin');
   const [leatherGrade, setLeatherGrade] = useState('');
   const [colorFamily, setColorFamily] = useState('Black');
@@ -523,13 +523,27 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
                 <label className="block text-[10px] uppercase tracking-widest font-mono text-[#767676] mb-1.5">
                   Category
                 </label>
-                <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}
+                <select
+                  value={categoryId}
+                  onChange={(e) => {
+                    setCategoryId(e.target.value);
+                    if (e.target.value === 'cat-waitlist') {
+                      setStatus('WAITLIST');
+                    }
+                  }}
                   className="w-full px-3 py-2.5 border border-[#E5E5E5] text-sm text-[#111111] bg-white focus:outline-none focus:border-[#111111] transition-colors"
                 >
                   {categories.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
+                    <option key={c.id} value={c.id}>
+                      {c.name} {c.id === 'cat-waitlist' ? '★ (Private Allocation)' : ''}
+                    </option>
                   ))}
                 </select>
+                {categoryId === 'cat-waitlist' && (
+                  <p className="text-[10px] font-mono text-[#C5A869] mt-1 font-semibold">
+                    ★ Assigned to Waitlist & Bespoke Allocation
+                  </p>
+                )}
               </div>
 
               <div>
@@ -566,14 +580,20 @@ export default function AdminProductEditorPage({ params }: ProductEditorProps) {
                 </label>
                 <select
                   value={status}
-                  onChange={(e) => setStatus(e.target.value as 'ACTIVE' | 'DRAFT' | 'ARCHIVED' | 'OUT_OF_STOCK')}
+                  onChange={(e) => setStatus(e.target.value as any)}
                   className="w-full px-3 py-2.5 border border-[#E5E5E5] text-sm text-[#111111] bg-white focus:outline-none focus:border-[#111111] transition-colors"
                 >
                   <option value="ACTIVE">ACTIVE — Live in Storefront</option>
+                  <option value="WAITLIST">WAITLIST — Private Allocation / Pre-Order</option>
                   <option value="OUT_OF_STOCK">OUT OF STOCK — Marked Sold Out</option>
                   <option value="DRAFT">DRAFT — Hidden</option>
                   <option value="ARCHIVED">ARCHIVED — Inactive</option>
                 </select>
+                {status === 'WAITLIST' && (
+                  <p className="text-[10px] font-mono text-[#C5A869] mt-1">
+                    Clients will register with name, phone & delivery address
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -59,7 +59,7 @@ export interface Product {
   colorFamily: string;
   priceInPence: number; // Stored as integer pence (£1,850 = 185000)
   currency: string;
-  status: 'DRAFT' | 'ACTIVE' | 'ARCHIVED' | 'OUT_OF_STOCK';
+  status: 'DRAFT' | 'ACTIVE' | 'ARCHIVED' | 'OUT_OF_STOCK' | 'WAITLIST';
 
   // Merchandising flags
   isTopSelling: boolean;

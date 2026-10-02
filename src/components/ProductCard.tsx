@@ -37,10 +37,18 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     setTimeout(() => setAddedAnimation(false), 1200);
   };
 
-  // Badge logic — NEW takes priority over BESTSELLER
+  // Badge logic — WAITLIST takes top priority, then NEW, then BESTSELLER
   let badgeLabel: string | null = null;
   let badgeStyle = 'bg-[#111111] text-white';
-  if (product.isNewArrival) {
+  const isWaitlist =
+    product.status === 'WAITLIST' ||
+    product.categoryId === 'cat-waitlist' ||
+    product.category?.slug === 'waitlist';
+
+  if (isWaitlist) {
+    badgeLabel = 'WAITLIST';
+    badgeStyle = 'bg-[#111111] text-[#C5A869] border border-[#C5A869]/60 shadow-xs';
+  } else if (product.isNewArrival) {
     badgeLabel = 'NEW';
     badgeStyle = 'bg-[#8B6914] text-[#FFF8E7]'; // warm amber for new
   } else if (product.isTopSelling) {
@@ -147,25 +155,31 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
               </div>
             )}
 
-            <button
-              onClick={handleQuickAdd}
-              disabled={selectedVariant?.stockQuantity === 0}
-              className="w-full py-2.5 bg-[#111111] text-white text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-black transition-colors flex items-center justify-center space-x-1.5 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
-            >
-              {selectedVariant?.stockQuantity === 0 ? (
-                <span>Out of Stock</span>
-              ) : addedAnimation ? (
-                <>
-                  <Check size={12} />
-                  <span>Added</span>
-                </>
-              ) : (
-                <>
-                  <Plus size={12} />
-                  <span>Add to Bag</span>
-                </>
-              )}
-            </button>
+            {isWaitlist ? (
+              <div className="w-full py-2.5 bg-[#111111] text-[#C5A869] text-[10px] uppercase tracking-[0.2em] font-medium border border-[#C5A869]/50 flex items-center justify-center space-x-1.5 shadow-xs">
+                <span>Reserve Allocation</span>
+              </div>
+            ) : (
+              <button
+                onClick={handleQuickAdd}
+                disabled={selectedVariant?.stockQuantity === 0}
+                className="w-full py-2.5 bg-[#111111] text-white text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-black transition-colors flex items-center justify-center space-x-1.5 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
+              >
+                {selectedVariant?.stockQuantity === 0 ? (
+                  <span>Out of Stock</span>
+                ) : addedAnimation ? (
+                  <>
+                    <Check size={12} />
+                    <span>Added</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus size={12} />
+                    <span>Add to Bag</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </div>
       </Link>

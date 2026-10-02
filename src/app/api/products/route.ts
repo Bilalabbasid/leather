@@ -18,7 +18,7 @@ const productCreateSchema = z.object({
   material: z.string().default('Genuine Leather'),
   colorFamily: z.string().default('Black'),
   priceInPence: z.number().int().positive('Price must be greater than 0 pence'),
-  status: z.enum(['DRAFT', 'ACTIVE', 'ARCHIVED', 'OUT_OF_STOCK']).default('ACTIVE'),
+  status: z.enum(['DRAFT', 'ACTIVE', 'ARCHIVED', 'OUT_OF_STOCK', 'WAITLIST']).default('ACTIVE'),
   isTopSelling: z.boolean().default(false),
   isNewArrival: z.boolean().default(false),
   isFeaturedHero: z.boolean().default(false),
@@ -72,10 +72,15 @@ export async function GET(req: NextRequest) {
     if (statusParam) {
       where.status = statusParam;
     } else {
-      where.status = 'ACTIVE';
+      where.status = { in: ['ACTIVE', 'WAITLIST'] };
     }
 
-    if (categorySlug === 'shoes') {
+    if (categorySlug === 'waitlist') {
+      where.OR = [
+        { category: { slug: 'waitlist' } },
+        { status: 'WAITLIST' },
+      ];
+    } else if (categorySlug === 'shoes') {
       where.category = {
         slug: {
           in: ['shoes', 'shoes-oxford', 'shoes-chelsea', 'shoes-derby', 'shoes-loafer', 'shoes-monk', 'shoes-boots'],
