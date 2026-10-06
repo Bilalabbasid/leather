@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { X, Trash2, ArrowRight, Lock, Loader2, AlertCircle } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { FREE_SHIPPING_THRESHOLD_PENCE } from '@/lib/config';
+import CraftsmanshipNote from '@/components/CraftsmanshipNote';
 
 export default function CartDrawer() {
   const {
@@ -273,6 +274,9 @@ export default function CartDrawer() {
                 </div>
               </div>
 
+              {/* Craftsmanship Provenance Note */}
+              <CraftsmanshipNote variant="compact" />
+
               <button
                 onClick={handleCheckout}
                 disabled={isCheckingOut}
@@ -292,8 +296,15 @@ export default function CartDrawer() {
                 )}
               </button>
 
-              <div className="text-center text-[10px] text-[#767676] tracking-wider uppercase font-mono">
-                Secure 256-Bit Encrypted Payments via Stripe
+              <div className="flex items-center justify-between text-[10px] text-[#767676] tracking-wider uppercase font-mono pt-1">
+                <Link
+                  href="/checkout"
+                  onClick={closeCart}
+                  className="hover:text-[#111111] transition-colors underline underline-offset-2"
+                >
+                  Full Checkout Dossier
+                </Link>
+                <span>Encrypted by Stripe</span>
               </div>
             </div>
           )}
