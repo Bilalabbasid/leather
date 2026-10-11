@@ -54,6 +54,6 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (err: any) {
     console.error('[Admin Login Error]', err);
-    return NextResponse.json({ error: 'Server authentication error' }, { status: 500 });
+    return NextResponse.json({ error: err.message || 'Server authentication error' }, { status: 500 });
   }
 }
