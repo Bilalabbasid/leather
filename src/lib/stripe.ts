@@ -1,8 +1,16 @@
 import Stripe from 'stripe';
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY?.trim() || 'sk_test_placeholder';
+export function getStripeClient(customKey?: string): Stripe {
+  const stripeSecretKey =
+    customKey?.trim() ||
+    process.env.STRIPE_SECRET_KEY?.trim() ||
+    'sk_test_placeholder';
 
-export const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: '2024-11-20.acacia' as any,
-  typescript: true,
-});
+  return new Stripe(stripeSecretKey, {
+    apiVersion: '2024-11-20.acacia' as any,
+    typescript: true,
+  });
+}
+
+export const stripe = getStripeClient();
+

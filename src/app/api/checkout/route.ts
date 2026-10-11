@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { stripe } from '@/lib/stripe';
+import { getStripeClient } from '@/lib/stripe';
 
 const checkoutInputSchema = z.object({
   items: z
@@ -135,17 +135,14 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // 3. Check Stripe credentials (trim and support sk_ and rk_ keys)
+    // 3. Check Stripe credentials (support any sk_ or rk_ key format)
     const rawStripeKey = process.env.STRIPE_SECRET_KEY;
     const stripeKey = rawStripeKey?.trim();
     const isStripeConfigured =
       !!stripeKey &&
       !stripeKey.includes('mock') &&
       !stripeKey.includes('placeholder') &&
-      (stripeKey.startsWith('sk_test_') ||
-        stripeKey.startsWith('sk_live_') ||
-        stripeKey.startsWith('rk_test_') ||
-        stripeKey.startsWith('rk_live_'));
+      (stripeKey.startsWith('sk_') || stripeKey.startsWith('rk_'));
 
     // 4. Create order in database (or memory fallback)
     const orderNumber = `ACM-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -180,7 +177,7 @@ export async function POST(req: NextRequest) {
       pendingOrder = {
         id: `ord_${Date.now()}`,
         orderNumber,
-        status: 'PAID',
+        status: isStripeConfigured ? 'PENDING' : 'PAID',
         subtotalInPence,
         totalInPence: subtotalInPence,
         currency: 'GBP',
@@ -190,7 +187,8 @@ export async function POST(req: NextRequest) {
     // 5. If Stripe is configured, create live Stripe Checkout session
     if (isStripeConfigured) {
       try {
-        const session = await stripe.checkout.sessions.create({
+        const stripeClient = getStripeClient(stripeKey);
+        const session = await stripeClient.checkout.sessions.create({
           payment_method_types: ['card'],
           line_items: stripeLineItems,
           mode: 'payment',
@@ -226,11 +224,18 @@ export async function POST(req: NextRequest) {
           orderNumber: pendingOrder.orderNumber,
         });
       } catch (stripeErr: any) {
-        console.error('[Stripe Session Creation Failed]:', stripeErr.message);
+        console.error('[Stripe Session Creation Failed]:', stripeErr?.message);
+        return NextResponse.json(
+          {
+            error: `Stripe Checkout Error: ${stripeErr?.message || 'Failed to initialize session'}`,
+            details: stripeErr?.message,
+          },
+          { status: 400 }
+        );
       }
     }
 
-    // 6. Direct Reservation Fallback (when Stripe key is pending)
+    // 6. Direct Reservation Fallback (only when Stripe key is not configured)
     return NextResponse.json({
       url: `${appUrl}/checkout/success?session_id=ACM_DIRECT_${pendingOrder.id}&order_id=${pendingOrder.id}`,
       sessionId: `ACM_DIRECT_${pendingOrder.id}`,
