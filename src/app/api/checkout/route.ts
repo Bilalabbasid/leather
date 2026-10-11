@@ -192,6 +192,7 @@ export async function POST(req: NextRequest) {
           payment_method_types: ['card'],
           line_items: stripeLineItems,
           mode: 'payment',
+          allow_promotion_codes: true,
           billing_address_collection: 'required',
           shipping_address_collection: {
             allowed_countries: [
@@ -201,6 +202,17 @@ export async function POST(req: NextRequest) {
           },
           phone_number_collection: {
             enabled: true,
+          },
+          custom_text: {
+            shipping_address: {
+              message: 'White-glove insured delivery from the Acemen London Atelier. Includes tracking and signature verification.',
+            },
+            submit: {
+              message: 'By confirming your order, your piece is registered for bespoke atelier inspection and insured dispatch.',
+            },
+            after_submit: {
+              message: 'Thank you for choosing Acemen. An order receipt and provenance certificate have been dispatched to your email.',
+            },
           },
           success_url: `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&order_id=${pendingOrder.id}`,
           cancel_url: `${appUrl}/checkout/cancel?order_id=${pendingOrder.id}`,
