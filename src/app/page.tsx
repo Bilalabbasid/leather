@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { ArrowRight, TrendingUp, Sparkles } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import CategoryDiscovery from '@/components/luxury/CategoryDiscovery';
-import MaterialsSection from '@/components/luxury/MaterialsSection';
 import FootwearFeature from '@/components/luxury/FootwearFeature';
 import CraftsmanshipFeature from '@/components/luxury/CraftsmanshipFeature';
 import BespokeSection from '@/components/luxury/BespokeSection';
@@ -317,10 +316,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── 10. Materials & Provenance ──────────────────────────────────── */}
-      <MaterialsSection />
-
-      {/* ── 11. Savoir-Faire & Craftsmanship Feature ────────────────────── */}
+      {/* ── 10. Savoir-Faire & Craftsmanship Feature ────────────────────── */}
       <CraftsmanshipFeature />
 
       {/* ── 12. Made to Exact Specification (Bespoke ACE) ───────────────── */}
