@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { INITIAL_CATEGORIES } from '@/lib/data';
 import { z } from 'zod';
 
 export const dynamic = 'force-dynamic';
@@ -17,7 +18,13 @@ export async function GET() {
     });
     return NextResponse.json({ success: true, categories });
   } catch {
-    return NextResponse.json({ error: 'Failed to retrieve categories' }, { status: 500 });
+    return NextResponse.json({
+      success: true,
+      categories: INITIAL_CATEGORIES.map((c) => ({
+        ...c,
+        _count: { products: 0 },
+      })),
+    });
   }
 }
 

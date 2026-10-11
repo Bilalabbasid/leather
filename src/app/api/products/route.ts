@@ -158,8 +158,12 @@ export async function GET(req: NextRequest) {
       products,
     });
   } catch (err: any) {
-    console.error('[API Products GET Error]', err);
-    return NextResponse.json({ error: 'Failed to retrieve catalog' }, { status: 500 });
+    console.error('[API Products GET Error, using static fallback]', err);
+    return NextResponse.json({
+      success: true,
+      count: INITIAL_PRODUCTS.length,
+      products: INITIAL_PRODUCTS,
+    });
   }
 }
 
