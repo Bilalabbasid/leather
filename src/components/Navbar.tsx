@@ -47,9 +47,9 @@ interface MegaMenuState {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { getCartCount, openCart, openSearch, currency, setCurrency } = useStore();
+  const { cart, openCart, openSearch, currency, setCurrency } = useStore();
 
-  const [cartCount, setCartCount] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [megaMenu, setMegaMenu] = useState<MegaMenuState>({ open: null });
@@ -58,7 +58,13 @@ export default function Navbar() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => { setCartCount(getCartCount()); }, [getCartCount]);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cartCount = mounted
+    ? cart.reduce((total, item) => total + item.quantity, 0)
+    : 0;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 15);
