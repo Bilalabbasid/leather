@@ -6,7 +6,6 @@ import ProductCard from '@/components/ProductCard';
 import CategoryDiscovery from '@/components/luxury/CategoryDiscovery';
 import FootwearFeature from '@/components/luxury/FootwearFeature';
 import CraftsmanshipFeature from '@/components/luxury/CraftsmanshipFeature';
-import BespokeSection from '@/components/luxury/BespokeSection';
 import ServicesBar from '@/components/luxury/ServicesBar';
 import { prisma } from '@/lib/prisma';
 import { INITIAL_PRODUCTS } from '@/lib/data';
@@ -318,9 +317,6 @@ export default async function HomePage() {
 
       {/* ── 10. Savoir-Faire & Craftsmanship Feature ────────────────────── */}
       <CraftsmanshipFeature />
-
-      {/* ── 12. Made to Exact Specification (Bespoke ACE) ───────────────── */}
-      <BespokeSection />
 
       {/* ── 13. The Art of Travel Full-Bleed Spread ─────────────────────── */}
       <section className="relative py-24 sm:py-36 bg-[#080808] text-white overflow-hidden flex items-center justify-center">
