@@ -200,7 +200,7 @@ export default function ProductDetailPage({ params }: PDPProps) {
     },
     offers: {
       '@type': 'Offer',
-      url: `https://acemen.uk/products/${product.slug}`,
+      url: `https://acemen.co.uk/products/${product.slug}`,
       priceCurrency: 'GBP',
       price: (currentPriceInPence / 100).toFixed(2),
       availability:

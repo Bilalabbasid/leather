@@ -418,7 +418,7 @@ export default function AceBespokePage() {
       {/* ── 5. Atelier Contact Footer ─────────────────────────────── */}
       <section className="border-t border-neutral-800 py-12 text-center text-xs font-mono tracking-widest text-neutral-500 uppercase">
         <p className="mb-2">ACEMEN ACE ATELIER • LONDON MAYFAIR</p>
-        <p>DIRECT CONCIERGE: <a href="mailto:concierge@acemen.uk" className="text-[#C19A6B] underline hover:text-white">CONCIERGE@ACEMEN.UK</a></p>
+        <p>DIRECT CONCIERGE: <a href="mailto:concierge@acemen.co.uk" className="text-[#C19A6B] underline hover:text-white">CONCIERGE@ACEMEN.CO.UK</a></p>
       </section>
     </div>
   );

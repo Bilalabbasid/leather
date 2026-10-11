@@ -1,9 +1,9 @@
 import { CommerceMode, Currency } from './types';
 
 export const BRAND_NAME = 'ACEMEN';
-export const DOMAIN = 'acemen.uk';
-export const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://acemen.uk';
-export const CONCIERGE_EMAIL = 'concierge@acemen.uk';
+export const DOMAIN = 'acemen.co.uk';
+export const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://acemen.co.uk';
+export const CONCIERGE_EMAIL = 'concierge@acemen.co.uk';
 
 // Free shipping threshold in pence (e.g. £500.00 = 50,000 pence)
 export const FREE_SHIPPING_THRESHOLD_PENCE = 50000;

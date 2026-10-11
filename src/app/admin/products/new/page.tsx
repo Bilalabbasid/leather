@@ -431,7 +431,7 @@ export default function NewProductPage() {
                 className="w-full px-3 py-2.5 border border-[#E5E5E5] text-sm font-mono text-[#767676] bg-neutral-50 focus:outline-none focus:border-[#111111] transition-colors"
               />
               <p className="text-[10px] font-mono text-neutral-400 mt-1">
-                acemen.uk/products/<span className="text-[#767676]">{slug || '…'}</span>
+                acemen.co.uk/products/<span className="text-[#767676]">{slug || '…'}</span>
               </p>
             </div>
 

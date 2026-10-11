@@ -173,7 +173,7 @@ export default function SizeGuideModal() {
 
         <div className="mt-6 pt-4 border-t border-[#E5E5E5] flex items-center justify-between text-[11px] text-[#767676]">
           <span>Need custom Savile Row sizing guidance?</span>
-          <span className="font-mono text-[#111111]">concierge@acemen.uk</span>
+          <span className="font-mono text-[#111111]">concierge@acemen.co.uk</span>
         </div>
       </div>
     </div>

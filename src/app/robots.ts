@@ -6,9 +6,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/api/admin/', '/api/checkout/'],
+        disallow: [
+          '/admin/',
+          '/api/',
+          '/checkout/success',
+          '/checkout/cancel',
+        ],
       },
     ],
-    sitemap: 'https://acemen.uk/sitemap.xml',
+    sitemap: 'https://acemen.co.uk/sitemap.xml',
+    host: 'https://acemen.co.uk',
   };
 }
