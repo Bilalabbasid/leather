@@ -35,8 +35,7 @@ export default function Footer() {
             </p>
             <div className="text-[11px] text-neutral-400 font-mono tracking-widest space-y-1">
               <p className="text-white font-sans text-xs font-medium">London Headquarters & Atelier</p>
-              <p>551 Staines Road, Hounslow, Middlesex</p>
-              <p>London TW4 5DL, United Kingdom</p>
+              <p>London, UK</p>
               <div className="pt-2 flex items-center space-x-3 text-xs">
                 <a href="mailto:info@acemen.co.uk" className="text-white hover:text-[#C5A869] transition-colors">info@acemen.co.uk</a>
                 <span className="text-neutral-600">•</span>
