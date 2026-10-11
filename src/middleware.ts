@@ -11,8 +11,8 @@ export async function middleware(req: NextRequest) {
   const host = req.headers.get('host') || '';
   const { pathname, search } = req.nextUrl;
 
-  // Permanent 301 redirect from acemen.uk, www.acemen.uk, and www.acemen.co.uk -> acemen.co.uk
-  if (host === 'acemen.uk' || host === 'www.acemen.uk' || host === 'www.acemen.co.uk') {
+  // Permanent 301 redirect from acemen.uk -> acemen.co.uk
+  if (host === 'acemen.uk' || host === 'www.acemen.uk') {
     return NextResponse.redirect(`https://acemen.co.uk${pathname}${search}`, {
       status: 301,
     });
